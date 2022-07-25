@@ -16,4 +16,7 @@ end
 
 namespace :admins, as: :admin do
 
+  root :to => "home#index"
+  resources :escrows
+
 end

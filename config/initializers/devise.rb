@@ -1,5 +1,17 @@
 # frozen_string_literal: true
+class TurboFailureApp < Devise::FailureApp
+  def respond
+    if request_format == :turbo_stream
+      redirect
+    else
+      super
+    end
+  end
 
+  def skip_format?
+    %w(html turbo_stream */*).include? request_format.to_s
+  end
+end
 # Assuming you have not yet modified this file, each configuration option below
 # is set to its default value. Note that some are commented out while others
 # are not: uncommented lines are intended to protect your configuration from
@@ -14,11 +26,11 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = 'b1b553bef446dd9c0357619d5bf8bbe62870daf170a0f239c8c4684f333c72e7254643df19d2011a61570fc55ffa981fedcbcba97c47ee7632872d4f868ea339'
+  # config.secret_key = '2fefc19bb7d9d9bf397b15113d529191fb1def03c9cc05d810f3f2734b595057b8244dadb1f04a881628db99c77e2b8368790a2384c0fed89613b8b1dae92584'
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
-  # config.parent_controller = 'DeviseController'
+  config.parent_controller = 'TurboDeviseController'
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
@@ -28,7 +40,7 @@ Devise.setup do |config|
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
-
+  config.navigational_formats = ['*/*', :html, :turbo_stream]
   # Configure the parent class responsible to send e-mails.
   # config.parent_mailer = 'ActionMailer::Base'
 
@@ -126,7 +138,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 12
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = '639252d1f4d2717d6d9015ab49dccede538bb214d90107161e55502326139cae9308776730ed0fb42afb91f46058b9b75d73ba31ad137721760d6550076e3e45'
+  # config.pepper = 'e133ac4be476d2d3b8874fcd22a020fb5c52c2fff84f08db5fb8eb5ab8f6a6daecd9519f89f7fde5f2025a0f4cf62d5fba704440088a0d89e3725a3661957d1c'
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false
@@ -305,6 +317,12 @@ Devise.setup do |config|
 
   # ==> Configuration for :registerable
 
+
+  config.warden do |manager|
+    manager.failure_app = TurboFailureApp
+  #   manager.intercept_401 = false
+  #   manager.default_strategies(scope: :user).unshift :some_external_strategy
+  end
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true

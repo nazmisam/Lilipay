@@ -9,4 +9,21 @@ html
     = stylesheet_link_tag "application", "data-turbo-track": "reload" 
     = javascript_importmap_tags 
   body
-    = yield
+    - if admin_signed_in?
+      = render "admins/home/nav"
+    - elsif user_signed_in? 
+      = render "users/home/nav"
+    - else
+      = render "home/nav"
+    
+    div
+      - if notice
+        p class="alert alert-success"
+          = notice 
+    
+      - if alert
+        p class="alert alert-error"
+          = alert 
+          
+    div class= " w-full h-full p-4 m-8 mx-auto"
+      = yield

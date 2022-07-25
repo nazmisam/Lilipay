@@ -5,8 +5,8 @@
       <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign up your account now</h2>
     </div>
 
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
+    <%= form_for(resource, as: resource_name, url: user_registration_path(resource_name)) do |f| %>
+      <%= render "users/shared/error_messages", resource: resource %>
       <div class="rounded-md shadow-sm -space-y-px">
         <div>
           <%= f.label :email, class: "sr-only" %><br />

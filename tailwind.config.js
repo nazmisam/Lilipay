@@ -7,17 +7,17 @@ module.exports = {
     './app/javascript/**/*.js'
   ],
 
-  plugins: [require('@tailwindcss/typography'), require("daisyui")],
+  plugins: [require("daisyui")],
 
   // daisyUI config (optional)
   daisyui: {
     styled: true,
-    themes: true,
+    themes: false,
     base: true,
     utils: true,
     logs: true,
     rtl: false,
     prefix: "",
-    darkTheme: "cupcake",
+    darkTheme: false,
   },
 }

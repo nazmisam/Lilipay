@@ -92,3 +92,4 @@ gem 'letter_opener_web'
 gem 'cssbundling-rails'
 gem "figaro"
 gem 'trix-rails'
+gem 'simple_form-tailwind'

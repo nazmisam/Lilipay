@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  role: MyString
+  payment_for: MyString
+  payment_amount: 9.99
+  transaction_fees: 9.99
+
+two:
+  role: MyString
+  payment_for: MyString
+  payment_amount: 9.99
+  transaction_fees: 9.99

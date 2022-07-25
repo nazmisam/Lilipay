@@ -1,0 +1,10 @@
+p style="color: green" = notice
+
+== render @escrow
+
+div
+  => link_to "Edit this escrow", edit_escrow_path(@escrow)
+  '|
+  =< link_to "Back to escrows", escrows_path
+
+  = button_to "Destroy this escrow", @escrow, method: :delete

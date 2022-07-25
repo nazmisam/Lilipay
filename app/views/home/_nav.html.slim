@@ -1,0 +1,19 @@
+.navbar.mb-2.shadow-lg.bg-neutral.text-neutral-content
+  .px-2.mx-2.navbar-start
+    span.text-lg.font-bold
+      | LiliPay
+  .hidden.px-2.mx-2.navbar-center.lg:flex
+    .flex.items-stretch
+      a.btn.btn-ghost.btn-sm.rounded-btn
+        | Home
+      a.btn.btn-ghost.btn-sm.rounded-btn
+        | Portfolio
+      a.btn.btn-ghost.btn-sm.rounded-btn
+        | About
+      a.btn.btn-ghost.btn-sm.rounded-btn
+        | Contact
+  .navbar-end
+    = link_to "Sign in", new_user_session_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium item-center", class: "btn btn-square btn-ghost"
+    button.btn.btn-square.btn-ghost
+      svg.inline-block.w-6.h-6.stroke-current fill="none" viewbox=("0 0 24 24") xmlns="http://www.w3.org/2000/svg" 
+        path d=("M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z") stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
