@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_25_023815) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_26_065853) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -55,7 +55,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_25_023815) do
   end
 
   create_table "escrows", force: :cascade do |t|
-    t.string "role"
+    t.integer "roles", default: 0
     t.string "payment_for"
     t.decimal "payment_amount"
     t.decimal "transaction_fees"
@@ -63,6 +63,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_25_023815) do
     t.datetime "updated_at", null: false
     t.string "user_email"
     t.string "vendor_email"
+    t.integer "status", default: 0
+    t.string "description"
+    t.string "shipping_attention"
+    t.string "shipping_address"
+    t.string "shipping_postal"
+    t.string "shipping_city"
+    t.string "shipping_state"
+    t.string "shipping_country"
+    t.integer "vendor_roles", default: 0
+    t.string "tracking_number"
   end
 
   create_table "users", force: :cascade do |t|

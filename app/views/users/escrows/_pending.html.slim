@@ -1,5 +1,5 @@
-turbo-frame#approve
- .w-full.max-w-7xl.mx-auto
+turbo-frame#pending
+    .w-full.max-w-7xl.mx-auto
         .bg-white.shadow-md.rounded.px-8.pt-6.pb-8.mb-1
             h1.font-bold.text-5xl Escrows
             div.lg:flex.justify-center.sm:flex.justify-start
@@ -8,11 +8,6 @@ turbo-frame#approve
                     li.step.step Shipping & Payment
                     li.step.step Delivery
                     li.step.step Receiving Confirmation
-                    li.step.step Release Payment
+                    li.step.step Payment Released
       
-            | Please approve this transaction
-
-            = simple_form_for [:user, @escrow], data:{turbo:false} do |f|
-                = f.input :status, as: :hidden
-                .inline.flex.justify-end
-                = f.submit 'Continue', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer"
+            | Waiting for another party to approve this transaction

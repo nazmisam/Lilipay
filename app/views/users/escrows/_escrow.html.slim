@@ -1,13 +1,19 @@
 div id="#{dom_id escrow}"
-  p
-    strong Role:
-    =< escrow.role
-  p
-    strong Payment for:
-    =< escrow.payment_for
-  p
-    strong Payment amount:
+  td.text-center
+    =< escrow.id 
+  td
+    =< escrow.payment_for 
+  td
+    =< escrow.status
+  td  
     =< escrow.payment_amount
-  p
-    strong Transaction fees:
-    =< escrow.transaction_fees
+  td
+    - if current_user.email == escrow.user_email
+      =< escrow.roles
+    - else
+      - r = Escrow.roles.keys
+      - r.delete(escrow.roles)
+      =< r.last
+  td
+    =< escrow.description
+  

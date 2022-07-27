@@ -6,7 +6,8 @@ br
   = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
 
   .form-inputs
-    = f.input :role, as: :radio_buttons, collection: ["Buyer", "seller"]
+    = f.input :vendor_roles, as: :hidden
+    = f.input :roles, as: :radio_buttons, collection: Escrow.roles.keys.to_a
     br
     = f.label :payment_for, "payment for" , class: 'text-sm font-medium text-gray-600 block'
     = f.input_field :payment_for, as: :select, collection: ["Goods", "Services"], class: "shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 bg-white focus:outline-none focus:ring-0 focus:border-blue-500 text-gray-400 leading-6 transition-colors duration-200 ease-in-out"
@@ -14,7 +15,8 @@ br
     br
     = f.input :payment_amount
     br
-    = f.input :transaction_fees
+    = f.label :transaction_fee, "Transaction Fee" , class: 'text-sm font-medium text-gray-600 block'
+    strong RM #{f.input_field :transaction_fees, value: 2, class: 'font-bold', readonly: true} 
     br
 
   .text-3xl.text-red-600.pt-10 Transaction Details
@@ -26,6 +28,8 @@ br
     br
     br
     = f.input :vendor_email
+    br
+    = f.input :description
     br
     = f.file_field :invoice
     br
