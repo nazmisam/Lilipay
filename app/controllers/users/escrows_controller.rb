@@ -8,7 +8,7 @@ class Users::EscrowsController < ApplicationController
 
   # GET /escrows/1 or /escrows/1.json
   def show
-    
+    @escrow.generate_transaction_number
   end
 
   # GET /escrows/new
@@ -76,11 +76,28 @@ class Users::EscrowsController < ApplicationController
   end
   
   def approve
-    respond_to do |format|
-      @escrow.update(escrow_params)
+    @escrow.generate_transaction_number
+    if @escrow.update(escrow_params)
       @escrow.update_columns(status: 2)
-      format.html { redirect_to user_escrow_url(@escrow), notice: "Escrow was successfully updated." }
-      format.json { render :show, status: :ok, location: @escrow }
+      Rails.logger.debug("testing #{@payment.generate_checksum}")
+      params_api = {
+        uid: "02b66d73-c60f-47e6-a07c-0aa3609ddddd",
+        checksum: @escrow.generate_checksum,
+        buyer_email: @escrow.buyer_email,
+        buyer_name: @escrow.buyer_name,
+        buyer_phone: @escrow.shipping_attention,
+        order_number: @escrow.order_number,
+        product_description: @escrow.description,
+        transaction_amount: @escrow.total_pay,
+        callback_url: "",
+        redirect_url: "http://localhost:3000/users/escrows/#{@escrows.id}/paymentredirect",
+        token: "ZiSzpYWJ4VY5xhb1W7M9",
+        redirect_post: "true"
+      }
+      redirect_post("https://sandbox.securepay.my/api/v1/payments",            # URL, looks understandable
+        params: params_api)
+    else
+      Rails.logger.debug "Failed to save"
     end
   end
 
@@ -110,7 +127,7 @@ class Users::EscrowsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def escrow_params
-      params.require(:escrow).permit(:proof, :vendor_roles, :status, :roles, :payment_for, :payment_amount, :transaction_fees, :user_email, :vendor_email, :invoice, :shipping_attention, :shipping_address, :shipping_postal, :shipping_city, :shipping_state, :shipping_country, :receipt, :tracking_number)
+      params.require(:escrow).permit(:transaction_number, :buyer_email, :contact_number, :total_pay, :buyer_name, :proof, :vendor_roles, :status, :roles, :payment_for, :payment_amount, :transaction_fees, :user_email, :vendor_email, :invoice, :shipping_attention, :shipping_address, :shipping_postal, :shipping_city, :shipping_state, :shipping_country, :receipt, :tracking_number)
     end
 
 end

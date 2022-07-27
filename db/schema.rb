@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_26_065853) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_27_020125) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -73,6 +73,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_26_065853) do
     t.string "shipping_country"
     t.integer "vendor_roles", default: 0
     t.string "tracking_number"
+    t.string "buyer_name"
+    t.string "buyer_email"
+    t.string "contact_number"
+    t.decimal "total_pay"
+    t.integer "transaction_number"
   end
 
   create_table "users", force: :cascade do |t|

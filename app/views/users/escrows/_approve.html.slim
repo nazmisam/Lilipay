@@ -20,8 +20,43 @@ turbo-frame#approve
                     = f.input :shipping_city
                     = f.input :shipping_state
                     = f.input :shipping_country
-                    = f.label :receipt, class: "block"
-                    = f.file_field :receipt
+                    
                     br
+                    .text-3xl.text-red-600.pt-10 Payment Details
+                    br
+                    br
+                    .form-inputs
+                        - if @escrow.roles == 'buyer'
+                            = f.label :user_email, "Email" , class: 'text-sm font-medium text-gray-600 block'
+                            = f.input_field :buyer_email, value: current_user.email, class: 'font-bold', readonly: true
+                        - else
+                            = f.label :user_email, "Email" , class: 'text-sm font-medium text-gray-600 block'
+                            = f.input_field :buyer_email, value: @escrow.vendor_email, class: 'font-bold', readonly: true
+                        br
+                        br
+                        = f.label :user_email, "Transaction Number" , class: 'text-sm font-medium text-gray-600 block'
+                        = f.input_field :transaction_number, class: 'font-bold', readonly: true
+                        br
+                        br
+                        = f.input :buyer_name
+                        br
+                        = f.label :description, class: 'block'
+                        =< @escrow.description
+                        br
+                        br
+                        = f.label :payment_amount, class: "block"
+                        .text-end
+                            strong Invoice Amount: RM #{'%.2f' % (@escrow.payment_amount)}
+                            - sum = 0
+                            p 
+                                strong Transaction Fee (#{'%.0f' % @escrow.transaction_fees}%): RM #{'%.2f' % (@escrow.payment_amount * @escrow.transaction_fees / 100)}
+                            p
+                                - sum = '%.2f' % (@escrow.payment_amount * @escrow.transaction_fees / 100 + @escrow.payment_amount )
+                                strong Total Payment: RM #{f.text_field :total_pay, value: sum, readonly: true, class: 'w-10'}
+                            
+
+
+                            br
                     .inline.flex.justify-end
                         = f.submit 'Continue', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer"
+                    br
