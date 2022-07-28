@@ -16,6 +16,11 @@ end
 
 namespace :users, as: :user do
   root 'home#index'
-  resources :escrows
-
+  resources :escrows do
+    collection do
+      post :paymentredirect
+    end
+  end
+  resources :paymentreleases
+  resources :payments
 end

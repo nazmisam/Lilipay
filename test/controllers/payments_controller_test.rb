@@ -17,7 +17,7 @@ class PaymentsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create payment" do
     assert_difference("Payment.count") do
-      post payments_url, params: { payment: { address: @payment.address, amount: @payment.amount, city: @payment.city, contact_number: @payment.contact_number, country: @payment.country, description: @payment.description, escrows_id: @payment.escrows_id, name: @payment.name, postal_code: @payment.postal_code, state: @payment.state, transaction_number: @payment.transaction_number } }
+      post payments_url, params: { payment: { address: @payment.address, amount: @payment.amount, city: @payment.city, contact_number: @payment.contact_number, country: @payment.country, description: @payment.description, escrow_id: @payment.escrow_id, name: @payment.name, postal_code: @payment.postal_code, state: @payment.state, transaction_number: @payment.transaction_number } }
     end
 
     assert_redirected_to payment_url(Payment.last)
@@ -34,7 +34,7 @@ class PaymentsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update payment" do
-    patch payment_url(@payment), params: { payment: { address: @payment.address, amount: @payment.amount, city: @payment.city, contact_number: @payment.contact_number, country: @payment.country, description: @payment.description, escrows_id: @payment.escrows_id, name: @payment.name, postal_code: @payment.postal_code, state: @payment.state, transaction_number: @payment.transaction_number } }
+    patch payment_url(@payment), params: { payment: { address: @payment.address, amount: @payment.amount, city: @payment.city, contact_number: @payment.contact_number, country: @payment.country, description: @payment.description, escrow_id: @payment.escrow_id, name: @payment.name, postal_code: @payment.postal_code, state: @payment.state, transaction_number: @payment.transaction_number } }
     assert_redirected_to payment_url(@payment)
   end
 

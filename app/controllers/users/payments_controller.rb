@@ -1,4 +1,4 @@
-class PaymentsController < ApplicationController
+class Users::PaymentsController < ApplicationController
   before_action :set_payment, only: %i[ show edit update destroy ]
 
   # GET /payments or /payments.json
@@ -65,6 +65,6 @@ class PaymentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def payment_params
-      params.require(:payment).permit(:name, :contact_number, :amount, :description, :address, :postal_code, :city, :state, :country, :transaction_number, :escrows_id)
+      params.require(:payment).permit(:name, :contact_number, :amount, :description, :address, :postal_code, :city, :state, :country, :transaction_number, :escrow_id)
     end
 end

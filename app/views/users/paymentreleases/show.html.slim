@@ -1,0 +1,10 @@
+p style="color: green" = notice
+
+== render @paymentrelease
+
+div
+  => link_to "Edit this paymentrelease", edit_paymentrelease_path(@paymentrelease)
+  '|
+  =< link_to "Back to paymentreleases", paymentreleases_path
+
+  = button_to "Destroy this paymentrelease", @paymentrelease, method: :delete

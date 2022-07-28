@@ -1,0 +1,11 @@
+p style="color: green" = notice
+
+h1 Paymentreleases
+
+#paymentreleases
+  - @paymentreleases.each do |paymentrelease|
+    == render paymentrelease
+    p
+      = link_to "Show this paymentrelease", paymentrelease
+
+= link_to "New paymentrelease", new_paymentrelease_path

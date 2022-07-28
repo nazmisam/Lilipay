@@ -2,6 +2,8 @@ class Escrow < ApplicationRecord
     has_one_attached :invoice
     has_one_attached :receipt
     has_one_attached :proof
+    has_many :payments
+    has_many :paymentreleases
 
     enum roles: [:seller, :buyer], _suffix: true
     enum vendor_roles: [:seller, :buyer], _prefix: :roles
@@ -15,7 +17,7 @@ class Escrow < ApplicationRecord
     end
     
     def generate_checksum
-        data = "#{buyer_email}|#{buyer_name}|#{buyer_phone}|#{""}|#{shipping_attention}|#{description}|http://localhost:3000/users/escrows/#{product.id}/paymentredirect|#{total_pay}|#{"02b66d73-c60f-47e6-a07c-0aa3609ddddd"}"
+        data = "#{buyer_email}|#{buyer_name}|#{shipping_attention}|#{""}|#{transaction_number}|#{description}|http://localhost:3000/users/escrows/paymentredirect|#{total_pay}|#{"02b66d73-c60f-47e6-a07c-0aa3609ddddd"}"
         puts(data)
         checksum_token = "a69b33918639440dbc7adc2f0fea60f67d7d675d3a2876f061832eecd4c04592"
         OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), checksum_token, data)

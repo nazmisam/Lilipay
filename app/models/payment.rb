@@ -1,3 +1,3 @@
 class Payment < ApplicationRecord
-  belongs_to :escrows
+  belongs_to :escrow
 end

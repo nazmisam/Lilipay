@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_27_020125) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_27_083242) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -80,6 +80,40 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_27_020125) do
     t.integer "transaction_number"
   end
 
+  create_table "paymentreleases", force: :cascade do |t|
+    t.string "name"
+    t.string "contact_number"
+    t.decimal "amount"
+    t.string "description"
+    t.string "address"
+    t.string "postal_code"
+    t.string "city"
+    t.string "state"
+    t.string "country"
+    t.integer "transaction_number"
+    t.bigint "escrow_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["escrow_id"], name: "index_paymentreleases_on_escrow_id"
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.string "name"
+    t.string "contact_number"
+    t.decimal "amount"
+    t.string "description"
+    t.string "address"
+    t.string "postal_code"
+    t.string "city"
+    t.string "state"
+    t.string "country"
+    t.integer "transaction_number"
+    t.bigint "escrow_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["escrow_id"], name: "index_payments_on_escrow_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -94,4 +128,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_27_020125) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "paymentreleases", "escrows"
+  add_foreign_key "payments", "escrows"
 end

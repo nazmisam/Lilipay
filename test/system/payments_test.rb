@@ -20,7 +20,7 @@ class PaymentsTest < ApplicationSystemTestCase
     fill_in "Contact number", with: @payment.contact_number
     fill_in "Country", with: @payment.country
     fill_in "Description", with: @payment.description
-    fill_in "Escrows", with: @payment.escrows_id
+    fill_in "Escrow", with: @payment.escrow_id
     fill_in "Name", with: @payment.name
     fill_in "Postal code", with: @payment.postal_code
     fill_in "State", with: @payment.state
@@ -41,7 +41,7 @@ class PaymentsTest < ApplicationSystemTestCase
     fill_in "Contact number", with: @payment.contact_number
     fill_in "Country", with: @payment.country
     fill_in "Description", with: @payment.description
-    fill_in "Escrows", with: @payment.escrows_id
+    fill_in "Escrow", with: @payment.escrow_id
     fill_in "Name", with: @payment.name
     fill_in "Postal code", with: @payment.postal_code
     fill_in "State", with: @payment.state
