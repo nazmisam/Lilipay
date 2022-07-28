@@ -1,0 +1,20 @@
+.w-full.max-w-xl.mx-auto
+  .bg-white.shadow-md.rounded.px-8.pt-6.pb-8.mb-1
+      h1.font-bold.text-4xl.flex.justify-center New escrow
+      br
+      div.lg:flex.justify-center.sm:flex.justify-start
+        ul.min-width:9.steps.steps-vertical.lg:steps-horizontal
+          li.step.step-primary Register
+          li.step.step Shipping Info
+          li.step.step Payment
+          li.step.step Finish
+      
+      br
+      == render "form", escrow: @escrow
+
+      br
+
+      div
+        = link_to "Back to escrows", user_escrows_path
+
+      br

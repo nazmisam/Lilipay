@@ -1,0 +1,26 @@
+turbo-frame#approve
+ .w-full.max-w-7xl.mx-auto
+        .bg-white.shadow-md.rounded.px-8.pt-6.pb-8.mb-1
+            h1.font-bold.text-5xl Escrows
+            div.lg:flex.justify-center.sm:flex.justify-start
+                ul.min-width:9.steps.steps-vertical.lg:steps-horizontal
+                    li.step.step Register
+                    li.step.step Shipping & Payment
+                    li.step.step Delivery
+                    li.step.step-primary Receiving Confirmation
+                    li.step.step Release Payment
+            br
+            br
+            .text-center 
+                | Did you receive the #{@escrow.payment_for} ?
+                p
+                    | If yes please click received
+                br
+                =< @escrow.tracking_number
+                .max-w-xl.mx-auto
+                    = simple_form_for [:user, @escrow], data:{turbo:false} do |f|
+                        = f.input :proof
+                        br
+                        br
+                        .inline.flex.justify-center
+                            = f.submit 'received', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer"
