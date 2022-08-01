@@ -152,7 +152,8 @@ class Users::EscrowsController < ApplicationController
       redirect_to user_escrow_path(id: @escrow.id), notice: "Payment Success!"
       
     else
-      redirect_to user_escrows_path(id: @payment.id), alert: "Payment unsuccessful!"
+      sign_in(user) if user.present?
+      redirect_to user_escrows_path(id: @escrow.id), alert: "Payment unsuccessful!"
     
     end
   end

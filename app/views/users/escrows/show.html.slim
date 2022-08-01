@@ -1,7 +1,7 @@
 - if @escrow.roles == 'seller'
   - case @escrow.status
   - when "pending"
-    - page = @escrow.vendor_email == current_user.email || @escrow.vendor_roles == 0 ? "sellerconfirm" : "pending"  
+    - page = @escrow.vendor_email == current_user.email ? "sellerconfirm" : "pending"  
   - when "approved"
     - page = @escrow.vendor_email == current_user.email ?  "approve" : "waitaddressinfo"
   - when "paid"

@@ -136,7 +136,7 @@ class Admins::EscrowsController < ApplicationController
       if @escrow.update(escrow_params)
         @escrow.update(status: 6)
         Rails.logger.debug "user"
-        @paymentrelease = Paymentrelease.new(user_id: @escrow.user_id, escrow_id: @escrow.id, status: "refunded", name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: @escrow.payment_amount, transaction_number: @escrow.transaction_number)
+        @paymentrelease = Paymentrelease.new(description: @escrow.refund_description, user_id: @escrow.user_id, escrow_id: @escrow.id, status: "refunded", name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: @escrow.payment_amount, transaction_number: @escrow.transaction_number)
         @paymentrelease.save!
         Rails.logger.debug "mana #{@paymentrelease.id}"
         format.html { redirect_to admin_escrow_url(@escrow), notice: "Escrow was successfully updated." }

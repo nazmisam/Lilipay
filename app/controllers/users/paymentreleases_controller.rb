@@ -3,7 +3,7 @@ class Users::PaymentreleasesController < ApplicationController
 
   # GET /paymentreleases or /paymentreleases.json
   def index
-    @paymentreleases = Paymentrelease.all
+    @paymentreleases = Paymentrelease.where(user_id: current_user.id)
   end
 
   # GET /paymentreleases/1 or /paymentreleases/1.json
