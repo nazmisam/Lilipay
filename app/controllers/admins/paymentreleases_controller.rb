@@ -65,6 +65,6 @@ class Admins::PaymentreleasesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def paymentrelease_params
-      params.require(:paymentrelease).permit(:name, :contact_number, :amount, :description, :address, :postal_code, :city, :state, :country, :transaction_number, :escrow_id)
+      params.require(:paymentrelease).permit(:user_id, :name, :contact_number, :amount, :description, :address, :postal_code, :city, :state, :country, :transaction_number, :escrow_id)
     end
 end

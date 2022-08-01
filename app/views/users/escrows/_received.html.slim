@@ -9,10 +9,17 @@ turbo-frame#approve
                     li.step.step Delivery
                     li.step.step Receiving Confirmation
                     li.step.step-primary Payment Released
-      
+            
+            br
+            br
             .text-center 
-                p
+                p 
+                    strong Tracking number:
                     =< @escrow.tracking_number
 
                 p 
                     |Your Payment will be released in 3 days working days.
+                = simple_form_for [:user, @escrow], data:{turbo:false} do |f|
+                    = f.input_field :user_id, value: current_user.id, as: :hidden 
+                    .inline.flex.justify-end
+                    = f.submit 'Okay', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer"

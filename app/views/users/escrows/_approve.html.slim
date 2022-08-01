@@ -6,13 +6,18 @@ turbo-frame#approve
                 ul.min-width:9.steps.steps-vertical.lg:steps-horizontal
                     li.step.step Register
                     li.step.step-primary  Shipping & Payment
-                    li.step.step Delivery
+                    li.step.step Processing
                     li.step.step Receiving Confirmation
                     li.step.step Release Payment
-      
-            .text-center 
-                | This transaction has been approved please fill in the shipping form
+            br
+            br
+            
+             
+            .text-center This transaction has been approved please fill in the shipping form
+            br
             .bg-white.shadow-md.rounded.max-w-xl.mx-auto
+                .text-3xl.text-red-600.pt-10 Shipment Details
+                br
                 = simple_form_for [:user, @escrow], data:{turbo:false} do |f|
                     = f.input :shipping_attention
                     = f.input :shipping_address

@@ -1,13 +1,17 @@
-turbo-frame#pending
-    .w-full.max-w-7xl.mx-auto
+turbo-frame#approve
+ .w-full.max-w-7xl.mx-auto
         .bg-white.shadow-md.rounded.px-8.pt-6.pb-8.mb-1
             h1.font-bold.text-5xl Escrows
             div.lg:flex.justify-center.sm:flex.justify-start
                 ul.min-width:9.steps.steps-vertical.lg:steps-horizontal
-                    li.step.step-primary Register
+                    li.step.step Register
                     li.step.step Shipping & Payment
                     li.step.step Processing
                     li.step.step Receiving Confirmation
-                    li.step.step Payment Released
-      
-            | Waiting for another party to approve this transaction
+                    li.step.step-primary Finished
+            br
+            br
+            .w-full.max-w-xl.mx-auto
+                .text-3xl.text-red-600.pt-10.text-center Refund Request
+                br
+                | Refund is successfully released to buyer

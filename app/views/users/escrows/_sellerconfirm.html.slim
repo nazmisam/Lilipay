@@ -11,12 +11,17 @@ turbo-frame#approve
                     li.step.step Release Payment
             br
             br
-            h1.text-center.font-bold.color-red-500 
-            | Please approve this transaction
+            h1.text-center.font-bold.text-xl
+                | Please approve this transaction
+                br
             .flex.justify-center
                 = simple_form_for [:user, @escrow], data:{turbo:false} do |f|
+                    br
                     = f.input :status, as: :hidden
                     = f.label :invoices, "Invoices:", class: "block font-bold"
                     = link_to 'view file', rails_blob_path(escrow.invoice, disposition: 'preview')
-                    .inline.flex.justify-end
-                    = f.submit 'Continue', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer"
+                    br
+                    br
+                    .inline
+                    = f.submit 'Approve', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer"
+                    =

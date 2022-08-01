@@ -6,13 +6,20 @@ turbo-frame#payment
                 ul.min-width:9.steps.steps-vertical.lg:steps-horizontal
                     li.step.step Register
                     li.step.step Shipping & Payment
-                    li.step.step-primary Delivery
+                    li.step.step-primary Processing
                     li.step.step Receiving Confirmation
                     li.step.step Release Payment
-      
-            | Please fill in your payment details
 
-            = simple_form_for [:user, @escrow], data:{turbo:false} do |f|
-                = f.input :tracking_number
-                .inline.flex.justify-end
-                = f.submit 'Continue', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer"
+            br
+            br
+            
+            .bg-white.shadow-md.rounded.max-w-xl.mx-auto
+                .text-center
+                    | Please fill in your payment details
+                br
+                = simple_form_for [:user, @escrow], data:{turbo:false} do |f|
+                    = f.input :tracking_number
+                    br/
+                    br
+                    .inline.flex.justify-center
+                    = f.submit 'Continue', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer"

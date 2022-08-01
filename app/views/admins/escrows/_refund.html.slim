@@ -16,6 +16,7 @@ turbo-frame#approve
                 br
                 = simple_form_for [:admin, @escrow], data:{turbo:false} do |f|
                     p.text-center
+                        = f.input_field :user_id, value: @escrow.user_id
                         strong.block Refund reason:
                         =< @escrow.refund_reason
                     p.text-center

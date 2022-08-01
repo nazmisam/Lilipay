@@ -11,9 +11,9 @@
   - when "received"
     - page = @escrow.vendor_email == current_user.email ?    "transactionfinished" : "received"
   - when "refund_requested"
-    - page = "refund"
+    - page =  @escrow.vendor_email == current_user.email ?    "refund" : "seller_refund"
   - when "refunded"
-    - page = "refund_successful"
+    - page = @escrow.vendor_email == current_user.email ?    "refund_successful" : "seller_refund_successful"
     
   turbo-frame#escrowprocess
 
@@ -30,15 +30,19 @@
   
   - case @escrow.status
   - when "pending"
-    - page = @escrow.vendor_email == current_user.email || @escrow.vendor_roles == 0 ? "sellerconfirm" : "pending"  
+    - page = @escrow.vendor_email == current_user.email ? "sellerconfirm" : "pending"  
   - when "approved"
     - page = @escrow.vendor_email == current_user.email ?  "waitaddressinfo" : "approve"
-  - when "ship"
-    - page = @escrow.vendor_email == current_user.email ? "shippinginfo" : "shipmentinfo" 
   - when "paid"
-    - page = @escrow.vendor_email == current_user.email ?   "deliverystatus" : "waitdeliveryprocess"
+    - page = @escrow.vendor_email == current_user.email ? "shippinginfo" : "shipmentinfo" 
+  - when "processing"
+    - page = @escrow.vendor_email == current_user.email ?  "waitdeliveryprocess" : "deliverystatus"
   - when "received"
     - page = @escrow.vendor_email == current_user.email ?   "received" : "transactionfinished"
+  - when "refund_requested"
+    - page =  @escrow.vendor_email == current_user.email ?    "seller_refund" : "refund" 
+  - when "refunded"
+    - page = @escrow.vendor_email == current_user.email ?    "seller_refund_successful" : "refund_successful"
   
 
 

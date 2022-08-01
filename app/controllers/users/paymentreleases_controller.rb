@@ -8,6 +8,10 @@ class Users::PaymentreleasesController < ApplicationController
 
   # GET /paymentreleases/1 or /paymentreleases/1.json
   def show
+    @paymentreleases = Paymentrelease.where(user_id: current_user.id)
+   
+    @escrows = Escrow.find_by(id: @paymentrelease.escrow_id)
+    Rails.logger.debug "dapat tak escrow #{@escrows.payment_amount}"
   end
 
   # GET /paymentreleases/new

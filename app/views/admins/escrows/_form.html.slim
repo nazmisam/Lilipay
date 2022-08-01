@@ -6,7 +6,6 @@ br
   = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
 
   .form-inputs
-    = f.input :vendor_roles, as: :hidden
     = f.input :roles, as: :radio_buttons, collection: Escrow.roles.keys.to_a
     br
     = f.label :payment_for, "Payment Purpose" , class: 'text-sm font-medium text-gray-600 block'

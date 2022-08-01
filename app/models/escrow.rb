@@ -2,11 +2,10 @@ class Escrow < ApplicationRecord
     has_one_attached :invoice
     has_one_attached :receipt
     has_one_attached :proof
-    has_many :payments
-    has_many :paymentreleases
+    has_many :payments, dependent: :destroy
+    has_many :paymentreleases, dependent: :destroy
 
-    enum roles: [:seller, :buyer], _suffix: true
-    enum vendor_roles: [:seller, :buyer], _prefix: :roles
+    enum roles: [:seller, :buyer]
     enum status: [ :pending, :approved, :paid, :processing, :received, :refund_requested, :refunded ]
     before_validation :generate_order_number, on: :show
 

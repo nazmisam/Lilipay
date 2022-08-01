@@ -30,11 +30,7 @@ class Users::EscrowsController < ApplicationController
   def create
 
     @escrow = Escrow.new(escrow_params)
-      if @escrow.roles = 0
-        @escrow.vendor_roles = 1
-      elsif @escrow.roles = 1
-        @escrow.vendor_roles = 0
-      end
+      
     respond_to do |format|
       if @escrow.save
         format.html { redirect_to user_escrows_url(@escrow), notice: "Escrow was successfully created." }
@@ -58,6 +54,8 @@ class Users::EscrowsController < ApplicationController
       processing
     elsif @escrow.processing?
       receive
+    elsif @escrow.received?
+      released
     end
   
   end
@@ -123,17 +121,23 @@ class Users::EscrowsController < ApplicationController
 
   def receive
     respond_to do |format|
-      @escrow.update(escrow_params)
-      @escrow.update_columns(status: 4)
-      sum = 0
-      sum = @escrow.payment_amount - (@escrow.payment_amount * @escrow.transaction_fees / 100)
-      @paymentrelease = Paymentrelease.new(escrow_id: @escrow.id, name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: sum, transaction_number: @escrow.transaction_number)
-      @paymentrelease.save
-      format.html { redirect_to user_escrow_url(@escrow), notice: "Escrow was successfully updated." }
-      format.json { render :show, status: :ok, location: @escrow }
+      if  @escrow.update(escrow_params)
+        if @escrow.refund_reason.present?
+          Rails.logger.debug "masuktakrefund #{@escrow.refund_reason}"
+          @escrow.update(status: 5)
+          format.html { redirect_to user_escrow_url(@escrow), notice: "Escrow was successfully updated." }
+          format.json { render :show, status: :ok, location: @escrow }
+        else
+          @escrow.update(status: 4)
+          format.html { redirect_to user_escrow_url(@escrow), notice: "Escrow was successfully updated." }
+          format.json { render :show, status: :ok, location: @escrow }
+        end
+      end
     end
   end
-  
+  def request_refund
+    @escrow = Escrow.find(params[:escrow_id])
+  end
   def paymentredirect
    
     user = User.find_by(email: params[:buyer_email])
@@ -153,6 +157,18 @@ class Users::EscrowsController < ApplicationController
     end
   end
 
+  def released
+    respond_to do |format|
+      if @escrow.update(escrow_params)
+        sum = 0
+        sum = @escrow.payment_amount - (@escrow.payment_amount * @escrow.transaction_fees / 100)
+        @paymentrelease = Paymentrelease.new(user_id: @escrow.user_id, description: @escrow.description, escrow_id: @escrow.id, name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: sum, transaction_number: @escrow.transaction_number)
+        @paymentrelease.save
+        format.html { redirect_to user_escrows_url(@escrow), notice: "Escrow was successfully updated." }
+        format.json { render :show, status: :ok, location: @escrow }
+      end
+    end
+  end
  
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -162,7 +178,7 @@ class Users::EscrowsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def escrow_params
-      params.require(:escrow).permit(:refund_description, :refund_reason, :transaction_number, :buyer_email, :contact_number, :total_pay, :buyer_name, :proof, :vendor_roles, :status, :roles, :payment_for, :payment_amount, :transaction_fees, :user_email, :vendor_email, :invoice, :shipping_attention, :shipping_address, :shipping_postal, :shipping_city, :shipping_state, :shipping_country, :receipt, :tracking_number)
+      params.require(:escrow).permit(:user_id, :description, :refund_description, :refund_reason, :transaction_number, :buyer_email, :contact_number, :total_pay, :buyer_name, :proof, :status, :roles, :payment_for, :payment_amount, :transaction_fees, :user_email, :vendor_email, :invoice, :shipping_attention, :shipping_address, :shipping_postal, :shipping_city, :shipping_state, :shipping_country, :receipt, :tracking_number)
     end
 
 end

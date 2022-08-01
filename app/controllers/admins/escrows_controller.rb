@@ -119,23 +119,26 @@ class Admins::EscrowsController < ApplicationController
 
   def receive
     respond_to do |format|
-      @escrow.update(escrow_params)
-      @escrow.update_columns(status: 4)
-      sum = 0
-      sum = @escrow.payment_amount - (@escrow.payment_amount * @escrow.transaction_fees / 100)
-      @paymentrelease = Paymentrelease.new(escrow_id: @escrow.id, name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: sum, transaction_number: @escrow.transaction_number)
-      @paymentrelease.save
-      format.html { redirect_to user_escrow_url(@escrow), notice: "Escrow was successfully updated." }
-      format.json { render :show, status: :ok, location: @escrow }
+      if @escrow.update(escrow_params)
+        @escrow.update_columns(status: 4)
+        sum = 0
+        sum = @escrow.payment_amount 
+        @paymentrelease = Paymentrelease.new(user_id: @escrow.user_id, description: @escrow.description, escrow_id: @escrow.id, name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: sum, transaction_number: @escrow.transaction_number, status: 1)
+        @paymentrelease.save
+        format.html { redirect_to user_escrow_url(@escrow), notice: "Escrow was successfully updated." }
+        format.json { render :show, status: :ok, location: @escrow }
+      end
     end
   end
 
   def approve_refund
     respond_to do |format|
       if @escrow.update(escrow_params)
-        @escrow.update_columns(status: 6)
-        @paymentrelease = Paymentrelease.new(escrow_id: @escrow.id, name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: @escrow.payment_amount, transaction_number: @escrow.transaction_number)
-        @paymentrelease.save
+        @escrow.update(status: 6)
+        Rails.logger.debug "user"
+        @paymentrelease = Paymentrelease.new(user_id: @escrow.user_id, escrow_id: @escrow.id, status: "refunded", name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: @escrow.payment_amount, transaction_number: @escrow.transaction_number)
+        @paymentrelease.save!
+        Rails.logger.debug "mana #{@paymentrelease.id}"
         format.html { redirect_to admin_escrow_url(@escrow), notice: "Escrow was successfully updated." }
         format.json { render :show, status: :ok, location: @escrow }
       end
@@ -169,7 +172,7 @@ class Admins::EscrowsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def escrow_params
-      params.require(:escrow).permit(:transaction_number, :buyer_email, :contact_number, :total_pay, :buyer_name, :proof, :vendor_roles, :status, :roles, :payment_for, :payment_amount, :transaction_fees, :user_email, :vendor_email, :invoice, :shipping_attention, :shipping_address, :shipping_postal, :shipping_city, :shipping_state, :shipping_country, :receipt, :tracking_number)
+      params.require(:escrow).permit(:refund_description, :user_id, :transaction_number, :buyer_email, :contact_number, :total_pay, :buyer_name, :proof, :vendor_roles, :status, :roles, :payment_for, :payment_amount, :transaction_fees, :user_email, :vendor_email, :invoice, :shipping_attention, :shipping_address, :shipping_postal, :shipping_city, :shipping_state, :shipping_country, :receipt, :tracking_number)
     end
 
 end
