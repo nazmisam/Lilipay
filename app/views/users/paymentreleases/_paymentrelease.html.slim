@@ -1,34 +1,15 @@
 div id="#{dom_id paymentrelease}"
-  p
-    strong Name:
-    =< paymentrelease.name
-  p
-    strong Contact number:
-    =< paymentrelease.contact_number
-  p
-    strong Amount:
-    =< paymentrelease.amount
-  p
-    strong Description:
-    =< paymentrelease.description
-  p
-    strong Address:
-    =< paymentrelease.address
-  p
-    strong Postal code:
-    =< paymentrelease.postal_code
-  p
-    strong City:
-    =< paymentrelease.city
-  p
-    strong State:
-    =< paymentrelease.state
-  p
-    strong Country:
-    =< paymentrelease.country
-  p
-    strong Transaction number:
-    =< paymentrelease.transaction_number
-  p
-    strong Escrow:
+  td
+    =< paymentrelease.created_at
+  td
     =< paymentrelease.escrow_id
+  td
+    =< paymentrelease.contact_number
+  td
+    =< 'RM' '%.2f' % paymentrelease.amount
+  td
+    =< paymentrelease.description
+  td
+    =< paymentrelease.transaction_number
+  td
+    
