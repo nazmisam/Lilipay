@@ -1,0 +1,32 @@
+turbo-frame#approve
+ .w-full.max-w-7xl.mx-auto
+        .bg-white.shadow-md.rounded.px-8.pt-6.pb-8.mb-1
+            h1.font-bold.text-5xl Escrows
+            div.lg:flex.justify-center.sm:flex.justify-start
+                ul.min-width:9.steps.steps-vertical.lg:steps-horizontal
+                    li.step.step Register
+                    li.step.step Shipping & Payment
+                    li.step.step  Delivery
+                    li.step.step-primary Receiving Confirmation
+                    li.step.step Payment Released
+            br
+            br
+            .w-full.max-w-xl.mx-auto
+                .text-3xl.text-red-600.pt-10.text-center Refund Request
+                br
+                = simple_form_for [:admin, @escrow], data:{turbo:false} do |f|
+                    p.text-center
+                        strong.block Refund reason:
+                        =< @escrow.refund_reason
+                    p.text-center
+                        strong.block Refund description:
+                        =< @escrow.refund_description
+                    p.text-center 
+                        strong.block Proof file: 
+                        = link_to 'Download file', rails_blob_path(escrow.proof, disposition: 'preview')
+                    = f.input :refund_description, class: 'shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 bg-white focus:outline-none focus:ring-0 focus:border-blue-500 text-black-500 leading-6 transition-colors duration-200 ease-in-out'
+                    br
+                    br
+
+                    .inline.flex.justify-center
+                        = f.submit 'approve', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer"

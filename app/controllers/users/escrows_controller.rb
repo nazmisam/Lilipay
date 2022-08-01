@@ -7,6 +7,11 @@ class Users::EscrowsController < ApplicationController
     @escrows = Escrow.where("user_email = ? OR vendor_email = ?", current_user.email, current_user.email )
   end
 
+  def request_refund
+    @escrow = Escrow.find(params[:escrow_id])
+    
+  end
+
   # GET /escrows/1 or /escrows/1.json
   def show
     @escrow.generate_transaction_number
@@ -49,9 +54,9 @@ class Users::EscrowsController < ApplicationController
       approve
     elsif @escrow.approved?
       payment
-    elsif @escrow.ship?
-      ship
     elsif @escrow.paid?
+      processing
+    elsif @escrow.processing?
       receive
     end
   
@@ -104,12 +109,13 @@ class Users::EscrowsController < ApplicationController
     end
   end
 
-  def ship
+  def processing
     respond_to do |format|
       if @escrow.update(escrow_params)
-        @escrow.update(status: 3)
-        format.html { redirect_to user_escrow_url(@escrow), notice: "Escrow was successfully updated." }
-        format.json { render :show, status: :ok, location: @escrow }
+    
+          @escrow.update(status: 3)
+          format.html { redirect_to user_escrow_url(@escrow), notice: "Escrow was successfully updated." }
+          format.json { render :show, status: :ok, location: @escrow }
 
       end
     end
@@ -127,7 +133,7 @@ class Users::EscrowsController < ApplicationController
       format.json { render :show, status: :ok, location: @escrow }
     end
   end
-
+  
   def paymentredirect
    
     user = User.find_by(email: params[:buyer_email])
@@ -147,6 +153,7 @@ class Users::EscrowsController < ApplicationController
     end
   end
 
+ 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_escrow
@@ -155,7 +162,7 @@ class Users::EscrowsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def escrow_params
-      params.require(:escrow).permit(:transaction_number, :buyer_email, :contact_number, :total_pay, :buyer_name, :proof, :vendor_roles, :status, :roles, :payment_for, :payment_amount, :transaction_fees, :user_email, :vendor_email, :invoice, :shipping_attention, :shipping_address, :shipping_postal, :shipping_city, :shipping_state, :shipping_country, :receipt, :tracking_number)
+      params.require(:escrow).permit(:refund_description, :refund_reason, :transaction_number, :buyer_email, :contact_number, :total_pay, :buyer_name, :proof, :vendor_roles, :status, :roles, :payment_for, :payment_amount, :transaction_fees, :user_email, :vendor_email, :invoice, :shipping_attention, :shipping_address, :shipping_postal, :shipping_city, :shipping_state, :shipping_country, :receipt, :tracking_number)
     end
 
 end

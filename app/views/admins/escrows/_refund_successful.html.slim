@@ -7,14 +7,11 @@ turbo-frame#approve
                     li.step.step Register
                     li.step.step Shipping & Payment
                     li.step.step Delivery
-                    li.step.step-primary Receiving Confirmation
-                    li.step.step Release Payment
+                    li.step.step Receiving Confirmation
+                    li.step.step-primary Finished
             br
             br
-            .text-center
-                p
-                    strong Tracking Number:  #{@escrow.tracking_number}
-                p 
-                    | Wait until confirmation from buyer
-                
-                
+            .w-full.max-w-xl.mx-auto
+                .text-3xl.text-red-600.pt-10.text-center Refund Request
+                br
+                | Refund has been approved

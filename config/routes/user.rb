@@ -17,6 +17,7 @@ end
 namespace :users, as: :user do
   root 'home#index'
   resources :escrows do
+    get :request_refund
     collection do
       post :paymentredirect
     end

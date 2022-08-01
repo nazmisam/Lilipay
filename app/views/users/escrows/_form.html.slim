@@ -15,8 +15,8 @@ br
     br
     = f.input :payment_amount, label: "Invoice Amount" 
     br
-    = f.label :transaction_fee, "Transaction Fee" , class: 'text-sm font-medium text-gray-600 block'
-    strong RM #{f.input_field :transaction_fees, value: 2, class: 'font-bold', readonly: true} 
+
+    = f.input_field :transaction_fees, value: 2, class: 'font-bold w-6', as: :hidden
     br
 
   .text-3xl.text-red-600.pt-10 Transaction Details

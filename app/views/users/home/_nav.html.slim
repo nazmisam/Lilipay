@@ -7,8 +7,9 @@ nav.navbar.mb-2.shadow-lg.bg-neutral.text-neutral-content
                 = link_to "Home", user_root_path, class: "btn btn-ghost btn-sm rounded-btn"
 
                 = link_to "Escrow", user_escrows_path, class: "btn btn-ghost btn-sm rounded-btn"
-                a.btn.btn-ghost.btn-sm.rounded-btn
-                    | About
+                
+                = link_to "Transactions", user_paymentreleases_path, class: "btn btn-ghost btn-sm rounded-btn"
+                
                 a.btn.btn-ghost.btn-sm.rounded-btn
                     | Contact
         .navbar-end

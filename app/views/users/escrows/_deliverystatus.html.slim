@@ -24,3 +24,4 @@ turbo-frame#approve
                         br
                         .inline.flex.justify-center
                             = f.submit 'received', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer"
+                            = link_to 'refund', user_escrow_request_refund_path(@escrow), class: "rounded-lg py-3 px-5 bg-red-600 text-white inline-block font-medium cursor-pointer"

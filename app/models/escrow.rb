@@ -7,7 +7,7 @@ class Escrow < ApplicationRecord
 
     enum roles: [:seller, :buyer], _suffix: true
     enum vendor_roles: [:seller, :buyer], _prefix: :roles
-    enum status: [ :pending, :approved, :ship, :paid, :received]
+    enum status: [ :pending, :approved, :paid, :processing, :received, :refund_requested, :refunded ]
     before_validation :generate_order_number, on: :show
 
     def generate_transaction_number

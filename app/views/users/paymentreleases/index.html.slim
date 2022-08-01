@@ -6,6 +6,6 @@ h1 Paymentreleases
   - @paymentreleases.each do |paymentrelease|
     == render paymentrelease
     p
-      = link_to "Show this paymentrelease", paymentrelease
+      = link_to "Show this paymentrelease", user_paymentrelease_path(paymentrelease)
 
-= link_to "New paymentrelease", new_paymentrelease_path
+= link_to "New paymentrelease", new_user_paymentrelease_path

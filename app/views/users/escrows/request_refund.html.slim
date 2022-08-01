@@ -1,0 +1,13 @@
+.w-full.max-w-7xl.mx-auto
+        .bg-white.shadow-md.rounded.px-8.pt-6.pb-8.mb-1
+            h1.font-bold.text-5xl Request Refund       
+            br
+            br
+            = simple_form_for [:user, @escrow], data:{turbo:false} do |f|
+                = f.input :refund_reason, as: :radio_buttons, collection: ['Did not receive the product', 'Product is broken', 'Product is not same in description']
+                br/
+                br
+                = f.label :refund_description, class: "block"
+                = f.text_area :refund_description, class: 'shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 bg-white focus:outline-none focus:ring-0 focus:border-blue-500 text-black-500 leading-6 transition-colors duration-200 ease-in-out'
+                .inline.flex.justify-end
+                    = f.submit 'request', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer"

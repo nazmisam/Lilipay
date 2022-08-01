@@ -49,10 +49,12 @@ class Admins::EscrowsController < ApplicationController
       approve
     elsif @escrow.approved?
       payment
-    elsif @escrow.ship?
-      ship
     elsif @escrow.paid?
+      processing
+    elsif @escrow.processing?
       receive
+    elsif @escrow.refund_requested?
+      approve_refund
     end
   
   end
@@ -104,7 +106,7 @@ class Admins::EscrowsController < ApplicationController
     end
   end
 
-  def ship
+  def processing
     respond_to do |format|
       if @escrow.update(escrow_params)
         @escrow.update(status: 3)
@@ -125,6 +127,18 @@ class Admins::EscrowsController < ApplicationController
       @paymentrelease.save
       format.html { redirect_to user_escrow_url(@escrow), notice: "Escrow was successfully updated." }
       format.json { render :show, status: :ok, location: @escrow }
+    end
+  end
+
+  def approve_refund
+    respond_to do |format|
+      if @escrow.update(escrow_params)
+        @escrow.update_columns(status: 6)
+        @paymentrelease = Paymentrelease.new(escrow_id: @escrow.id, name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: @escrow.payment_amount, transaction_number: @escrow.transaction_number)
+        @paymentrelease.save
+        format.html { redirect_to admin_escrow_url(@escrow), notice: "Escrow was successfully updated." }
+        format.json { render :show, status: :ok, location: @escrow }
+      end
     end
   end
 

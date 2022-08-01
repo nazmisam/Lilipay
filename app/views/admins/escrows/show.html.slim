@@ -1,52 +1,27 @@
-- if @escrow.roles == 'seller'
+
   - case @escrow.status
   - when "pending"
-    - page = @escrow.vendor_email == current_user.email || @escrow.vendor_roles == 0 ? "sellerconfirm" : "pending"  
+    - page = "pending" 
   - when "approved"
-    - page = @escrow.vendor_email == current_user.email ?  "approve" : "waitaddressinfo"
-  - when "ship"
-    - page = @escrow.vendor_email == current_user.email ?   "shipmentinfo" : "shippinginfo"
+    - page = "approve" 
   - when "paid"
-    - page = @escrow.vendor_email == current_user.email ?   "deliverystatus" : "waitdeliveryprocess"
+    - page = "shippinginfo"
+  - when "processing"
+    - page = "waitdeliveryprocess"
   - when "received"
-    - page = @escrow.vendor_email == current_user.email ?    "transactionfinished" : "received"
- 
+    - page = "received"
+  - when "refund_requested"
+    - page = "refund"
+  - when "refunded"
+    - page = "refund_successful"
   turbo-frame#escrowprocess
 
-    = render "users/escrows/#{page}", escrow:@escrow
+    = render "admins/escrows/#{page}", escrow:@escrow
    
   div
-    => link_to "Edit this escrow", edit_user_escrow_path(@escrow)
+    => link_to "Edit this escrow", edit_admin_escrow_path(@escrow)
     '|
-    =< link_to "Back to escrows", user_escrows_path
+    =< link_to "Back to escrows", admin_escrows_path
 
     = button_to "Destroy this escrow", @escrows, method: :delete
 
-- elsif @escrow.roles == 'buyer'
-  
-  - case @escrow.status
-  - when "pending"
-    - page = @escrow.vendor_email == current_user.email || @escrow.vendor_roles == 0 ? "sellerconfirm" : "pending"  
-  - when "approved"
-    - page = @escrow.vendor_email == current_user.email ?  "waitaddressinfo" : "approve"
-  - when "ship"
-    - page = @escrow.vendor_email == current_user.email ? "shippinginfo" : "shipmentinfo" 
-  - when "paid"
-    - page = @escrow.vendor_email == current_user.email ?   "deliverystatus" : "waitdeliveryprocess"
-  - when "received"
-    - page = @escrow.vendor_email == current_user.email ?   "received" : "transactionfinished"
-  
-
-
-  turbo-frame#escrowprocess
-   
-    = render "users/escrows/#{page}", escrow:@escrow
-  
-
-  div
-    => link_to "Edit this escrow", edit_user_escrow_path(@escrow)
-    '|
-    =< link_to "Back to escrows", user_escrows_path
-
-    = button_to "Destroy this escrow", @escrows, method: :delete
-        
