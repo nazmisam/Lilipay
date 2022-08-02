@@ -4,17 +4,17 @@ div id="#{dom_id escrow}"
   td
     =< escrow.payment_for 
   td
-    =< escrow.status
+    =< escrow.status.humanize
   td  
     =< escrow.payment_amount
 
   td
     - if current_user.email == escrow.user_email
-      =< escrow.roles
+      =< escrow.roles.humanize
     - else
       - r = Escrow.roles.keys
       - r.delete(escrow.roles)
-      =< r.last
+      =< r.last.humanize
   td
     =< escrow.description
   

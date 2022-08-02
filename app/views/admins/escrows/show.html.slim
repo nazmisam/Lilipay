@@ -14,6 +14,10 @@
     - page = "refund"
   - when "refunded"
     - page = "refund_successful"
+  - when "successful"
+    - page = "successful"
+  - when "rejected"
+    - page = "escrow_reject"
   turbo-frame#escrowprocess
 
     = render "admins/escrows/#{page}", escrow:@escrow

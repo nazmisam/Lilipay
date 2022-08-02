@@ -16,4 +16,10 @@ turbo-frame#approve
                     =< @escrow.tracking_number
 
                 p 
-                    |Your Payment will be released in 3 days working days.
+                = simple_form_for [:admin , @escrow], data:{turbo:false} do |f|
+                    = f.input_field :user_id, value: @escrow.user_id
+                    p.text-center 
+                        strong.block Proof file: 
+                        = link_to 'Download file', rails_blob_path(escrow.proof, disposition: 'preview')
+                    .inline.flex.justify-center
+                        = f.submit 'release', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer"

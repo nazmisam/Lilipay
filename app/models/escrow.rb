@@ -6,7 +6,7 @@ class Escrow < ApplicationRecord
     has_many :paymentreleases, dependent: :destroy
 
     enum roles: [:seller, :buyer]
-    enum status: [ :pending, :approved, :paid, :processing, :received, :refund_requested, :refunded ]
+    enum status: [ :pending, :approved, :paid, :processing, :received, :refund_requested, :refunded, :successful, :rejected ]
     before_validation :generate_order_number, on: :show
 
     def generate_transaction_number

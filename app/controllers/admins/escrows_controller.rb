@@ -55,6 +55,8 @@ class Admins::EscrowsController < ApplicationController
       receive
     elsif @escrow.refund_requested?
       approve_refund
+    elsif @escrow.received?
+      released
     end
   
   end
@@ -125,12 +127,24 @@ class Admins::EscrowsController < ApplicationController
         sum = @escrow.payment_amount 
         @paymentrelease = Paymentrelease.new(user_id: @escrow.user_id, description: @escrow.description, escrow_id: @escrow.id, name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: sum, transaction_number: @escrow.transaction_number, status: 1)
         @paymentrelease.save
-        format.html { redirect_to user_escrow_url(@escrow), notice: "Escrow was successfully updated." }
+        format.html { redirect_to admin_escrow_url(@escrow), notice: "Escrow was successfully updated." }
         format.json { render :show, status: :ok, location: @escrow }
       end
     end
   end
-
+  def released
+    respond_to do |format|
+      if @escrow.update(escrow_params)
+        @escrow.update_columns(status: 7)
+        sum = 0
+        sum = @escrow.payment_amount - (@escrow.payment_amount * @escrow.transaction_fees / 100)
+        @paymentrelease = Paymentrelease.new(user_id: @escrow.user_id, description: @escrow.description, escrow_id: @escrow.id, name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: sum, transaction_number: @escrow.transaction_number)
+        @paymentrelease.save
+        format.html { redirect_to admin_escrows_url(@escrow), notice: "Escrow was successfully updated." }
+        format.json { render :show, status: :ok, location: @escrow }
+      end
+    end
+  end
   def approve_refund
     respond_to do |format|
       if @escrow.update(escrow_params)

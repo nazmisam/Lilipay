@@ -71,11 +71,19 @@ class Users::EscrowsController < ApplicationController
   end
 
   def approve
-    respond_to do |format|
-      @escrow.update(escrow_params)
-      @escrow.update_columns(status: 1)
-      format.html { redirect_to user_escrow_url(@escrow), notice: "Escrow was successfully updated." }
-      format.json { render :show, status: :ok, location: @escrow }
+    if params[:Reject]
+      respond_to do |format|
+        @escrow.update(status: 8)
+        format.html { redirect_to user_escrows_url(@escrow), notice: "Escrow was successfully updated." }
+        format.json { render :show, status: :ok, location: @escrow }
+      end
+    else
+      respond_to do |format|
+        @escrow.update(escrow_params)
+        @escrow.update_columns(status: 1)
+        format.html { redirect_to user_escrow_url(@escrow), notice: "Escrow was successfully updated." }
+        format.json { render :show, status: :ok, location: @escrow }
+      end
     end
   end
   
@@ -161,10 +169,6 @@ class Users::EscrowsController < ApplicationController
   def released
     respond_to do |format|
       if @escrow.update(escrow_params)
-        sum = 0
-        sum = @escrow.payment_amount - (@escrow.payment_amount * @escrow.transaction_fees / 100)
-        @paymentrelease = Paymentrelease.new(user_id: @escrow.user_id, description: @escrow.description, escrow_id: @escrow.id, name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: sum, transaction_number: @escrow.transaction_number)
-        @paymentrelease.save
         format.html { redirect_to user_escrows_url(@escrow), notice: "Escrow was successfully updated." }
         format.json { render :show, status: :ok, location: @escrow }
       end

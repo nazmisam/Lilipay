@@ -14,7 +14,10 @@
     - page =  @escrow.vendor_email == current_user.email ?    "refund" : "seller_refund"
   - when "refunded"
     - page = @escrow.vendor_email == current_user.email ?    "refund_successful" : "seller_refund_successful"
-    
+  - when "successful"
+    - page = "successful"
+  - when "rejected"
+    - page = "escrow_reject"
   turbo-frame#escrowprocess
 
     = render "users/escrows/#{page}", escrow:@escrow
@@ -43,7 +46,10 @@
     - page =  @escrow.vendor_email == current_user.email ?    "seller_refund" : "refund" 
   - when "refunded"
     - page = @escrow.vendor_email == current_user.email ?    "seller_refund_successful" : "refund_successful"
-  
+  - when "successful"
+    - page = "successful"
+  - when "rejected"
+    - page = "escrow_reject"
 
 
   turbo-frame#escrowprocess
