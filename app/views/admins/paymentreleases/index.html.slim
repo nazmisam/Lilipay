@@ -18,9 +18,8 @@
             th colspan="2" Description
         tbody 
           - @paymentreleases.each do |paymentrelease|
-            tr
-              == render paymentrelease
-              td
-                = link_to heroicon('pencil-alt'), user_paymentrelease_path(paymentrelease)
+            
+            == render paymentrelease
+             
 
               

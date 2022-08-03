@@ -1,0 +1,152 @@
+- if @paymentrelease.status == "released"
+  .page-body
+    .container-xl
+      .card.card-lg
+        .card-body
+          table
+            tr
+              td
+                p.h3 #{@paymentrelease.name}
+                #address
+                  | Street Address
+                  br/
+                  | State, City
+                  br/
+                  | Region, Postal Code
+                  br/
+                  | ltd@example.com
+              td.flex.justify-end
+                
+                #address
+                  =< @paymentrelease.name
+                  br
+                  / =< @paymentrelease.buyer_address
+                  br/
+                  | State, City
+                  br/
+                  | Region, Postal Code
+                  br/
+                  | ctr@example.com
+          .col-12.my-5
+            h1 Receipt #{@paymentrelease.transaction_number}
+            | Payment Created at: #{@paymentrelease.created_at}
+          table.table.table-transparent.table-responsive
+            thead
+              tr
+                th.text-center style=("width: 1%") 
+                th Product
+                th.text-center style=("width: 1%")  Status
+                th.text-end style=("width: 1%")  Unit
+                th.text-end style=("width: 1%")  Amount
+
+          
+            tr
+              td.text-center 1
+              td
+                p.strong.mb-1  
+                  =< @paymentrelease.description
+                .text-muted 
+              td.text-center
+                =< @paymentrelease.status
+              td.text-end 
+                =< 'RM' '%.2f' % @escrows.payment_amount
+              td.text-end 
+                =< 'RM' '%.2f' % @escrows.payment_amount
+            tr
+              td.strong.text-end colspan="4"  Transaction Fee (#{@escrows.transaction_fees}%)
+              td.text-end
+                - sum = 0
+                - sum = '%.2f' % (@escrows.payment_amount * @escrows.transaction_fees / 100 + @escrows.payment_amount )
+                | -RM #{'%.2f' % (@escrows.payment_amount * @escrows.transaction_fees / 100)}
+            tr
+              td.strong.text-end colspan="4"  Subtotal
+              td.text-end 
+                =< 'RM' '%.2f' % @paymentrelease.amount
+                    
+                
+                p 
+                    strong  
+                p
+                    - sum = '%.2f' % (@escrows.payment_amount * @escrows.transaction_fees / 100 + @escrows.payment_amount )
+                    / strong Total Payment: RM #{f.text_field :total_pay, value: sum, readonly: true, class: 'w-10'}
+            tr
+              td.font-weight-bold.text-uppercase.text-end colspan="4"  Total Received
+              td.font-weight-bold.text-end 
+                =< 'RM' '%.2f' % @paymentrelease.amount
+          p.text-muted.text-center.mt-5
+            | Thank you very much for doing business with us. We look forward to working with
+            | you again!
+- else
+   .page-body
+    .container-xl
+      .card.card-lg
+        .card-body
+          table
+            tr
+              td
+                p.h3 #{@paymentrelease.name}
+                #address
+                  | Street Address
+                  br/
+                  | State, City
+                  br/
+                  | Region, Postal Code
+                  br/
+                  | ltd@example.com
+              td.flex.justify-end
+                
+                #address
+                  =< @paymentrelease.name
+                  br
+                  / =< @paymentrelease.buyer_address
+                  br/
+                  | State, City
+                  br/
+                  | Region, Postal Code
+                  br/
+                  | ctr@example.com
+          .col-12.my-5
+            h1 Receipt #{@paymentrelease.transaction_number}
+            | Payment Created at: #{@paymentrelease.created_at}
+          table.table.table-transparent.table-responsive
+            thead
+              tr
+                th.text-center style=("width: 1%") 
+                th Product
+                th.text-center style=("width: 1%")  Status
+                th.text-end style=("width: 1%")  Unit
+                th.text-end style=("width: 1%")  Amount
+
+          
+            tr
+              td.text-center 1
+              td
+                p.strong.mb-1  
+                  =< @paymentrelease.description
+                .text-muted 
+              td.text-center
+                =< @paymentrelease.status
+              td.text-end 
+                =< 'RM' '%.2f' % @escrows.payment_amount
+              td.text-end 
+                =< 'RM' '%.2f' % @escrows.payment_amount
+         
+            tr
+              td.strong.text-end colspan="4"  Subtotal
+              td.text-end 
+                =< 'RM' '%.2f' % @paymentrelease.amount
+                    
+                
+                p 
+                    strong  
+                p
+                    - sum = '%.2f' % (@escrows.payment_amount * @escrows.transaction_fees / 100 + @escrows.payment_amount )
+                    / strong Total Payment: RM #{f.text_field :total_pay, value: sum, readonly: true, class: 'w-10'}
+            tr
+              td.font-weight-bold.text-uppercase.text-end colspan="4"  Total Received
+              td.font-weight-bold.text-end 
+                =< 'RM' '%.2f' % @paymentrelease.amount
+          p.text-muted.text-center.mt-5
+            | Thank you very much for doing business with us. We look forward to working with
+            | you again!
+

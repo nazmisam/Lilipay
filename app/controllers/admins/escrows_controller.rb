@@ -4,7 +4,7 @@ class Admins::EscrowsController < ApplicationController
 
   # GET /escrows or /escrows.json
   def index
-    @escrows = Escrow.all
+    @escrows = Escrow.all.order(:id)
   end
 
   # GET /escrows/1 or /escrows/1.json
@@ -140,7 +140,7 @@ class Admins::EscrowsController < ApplicationController
         sum = @escrow.payment_amount - (@escrow.payment_amount * @escrow.transaction_fees / 100)
         @paymentrelease = Paymentrelease.new(user_id: @escrow.user_id, description: @escrow.description, escrow_id: @escrow.id, name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: sum, transaction_number: @escrow.transaction_number)
         @paymentrelease.save
-        format.html { redirect_to admin_escrows_url(@escrow), notice: "Escrow was successfully updated." }
+        format.html { redirect_to admin_escrows_url(@escrow), notice: "Payment was successfully released." }
         format.json { render :show, status: :ok, location: @escrow }
       end
     end

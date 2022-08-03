@@ -21,6 +21,14 @@ gem 'slim-rails'
 #simple form
 gem 'simple_form'
 
+#local time
+gem 'local_time'
+
+gem "heroicon"
+
+#nginx
+gem 'nginx'
+
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 5.0"
 
@@ -71,6 +79,8 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+
+  gem 'rubocop', require: false
 end
 
 group :test do

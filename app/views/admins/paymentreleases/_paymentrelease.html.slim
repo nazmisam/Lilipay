@@ -1,0 +1,18 @@
+div id="#{dom_id paymentrelease}"
+  tr
+    td
+      =<  local_time(paymentrelease.created_at) 
+    td
+      =< paymentrelease.user_id 
+    td
+      =< paymentrelease.escrow_id
+    td 
+      =< paymentrelease.transaction_number
+    td
+      =< 'RM' '%.2f' % paymentrelease.amount
+    td
+      =< paymentrelease.status 
+    td
+      =< paymentrelease.description
+    td 
+      = link_to heroicon('pencil-alt'), admin_paymentrelease_path(paymentrelease)

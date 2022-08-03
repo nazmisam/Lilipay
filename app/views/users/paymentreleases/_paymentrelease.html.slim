@@ -1,6 +1,6 @@
 div id="#{dom_id paymentrelease}"
   td
-    =< paymentrelease.created_at
+    =<  local_time(paymentrelease.created_at) 
   td
     =< paymentrelease.user_id 
   td

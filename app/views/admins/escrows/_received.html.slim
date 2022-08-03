@@ -11,15 +11,31 @@ turbo-frame#approve
                     li.step.step-primary Payment Released
             br
             br
-            .text-center 
-                p
-                    =< @escrow.tracking_number
-
+            .w-full.max-w-xl.mx-auto 
+                .text-3xl.text-red-600.pt-10.text-center Payment Details
+                br
+                br
+            
                 p 
                 = simple_form_for [:admin , @escrow], data:{turbo:false} do |f|
-                    = f.input_field :user_id, value: @escrow.user_id
-                    p.text-center 
+                    - if @escrow.roles == "buyer"
+                        p
+                        strong.block Email: 
+                        | #{@escrow.vendor_email}
+                    p
                         strong.block Proof file: 
                         = link_to 'Download file', rails_blob_path(escrow.proof, disposition: 'preview')
+                    p
+                        strong.block Transaction details:
+                    .text-end
+                            strong Invoice Amount: RM #{'%.2f' % (@escrow.payment_amount)}
+                            - sum = 0
+                            p 
+                                strong Transaction Fee (#{'%.0f' % @escrow.transaction_fees}%): RM #{'%.2f' % (@escrow.payment_amount * @escrow.transaction_fees / 100)}
+                            p
+                                - sum = '%.2f' % (@escrow.payment_amount - (@escrow.payment_amount * @escrow.transaction_fees / 100)  )
+                                strong Total Payment: RM 
+                                strong = sum
+                    = f.input :total_pay, as: :hidden
                     .inline.flex.justify-center
                         = f.submit 'release', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer"

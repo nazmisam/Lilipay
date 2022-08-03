@@ -12,17 +12,15 @@
         thead 
           tr 
             th escrow id
-            th type
+            th Date
+            th Buyer 
+            th Seller
             th status
-            th Amount
-            th Role
-            th colspan="2" Description
+            th Invoice Amount
+            th Action
         tbody 
           - @escrows.each do |escrow|
-            tr
               == render escrow
               
-              td 
-                = link_to "Show this escrow", admin_escrow_path(escrow)
-          
+              
               

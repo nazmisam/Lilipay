@@ -4,7 +4,7 @@ class Users::EscrowsController < ApplicationController
 
   # GET /escrows or /escrows.json
   def index
-    @escrows = Escrow.where("user_email = ? OR vendor_email = ?", current_user.email, current_user.email )
+    @escrows = Escrow.where("user_email = ? OR vendor_email = ?", current_user.email, current_user.email ).order(:id)
   end
 
   def request_refund
@@ -74,7 +74,7 @@ class Users::EscrowsController < ApplicationController
     if params[:Reject]
       respond_to do |format|
         @escrow.update(status: 8)
-        format.html { redirect_to user_escrows_url(@escrow), notice: "Escrow was successfully updated." }
+        format.html { redirect_to user_escrows_url(@escrow), alert: "Escrow was rejected." }
         format.json { render :show, status: :ok, location: @escrow }
       end
     else

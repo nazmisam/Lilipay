@@ -1,19 +1,26 @@
 div id="#{dom_id escrow}"
-  td.text-center
-    =< escrow.id 
-  td
-    =< escrow.payment_for 
-  td
-    =< escrow.status
-  td  
-    =< escrow.payment_amount
-  td
-    / - if current_user.email == escrow.user_email
-    /   =< escrow.roles
-    / - else
-    /   - r = Escrow.roles.keys
-    /   - r.delete(escrow.roles)
-    /   =< r.last
-  td
-    =< escrow.description
-  
+  tr
+    td.text-center
+      =< escrow.id 
+    
+    td
+      =< local_time(escrow.created_at)
+    td.text-sm
+      - if escrow.roles == 'buyer' 
+        =< escrow.user_email 
+      - else 
+        =< escrow.vendor_email
+    td.text-sm
+      - if escrow.roles == 'buyer' 
+        =< escrow.vendor_email 
+      - else 
+        =< escrow.user_email
+    td
+      =< escrow.status.humanize
+    td 
+      | RM #{'%.2f' % escrow.payment_amount}
+    td
+      = link_to heroicon('pencil-alt'), admin_escrow_path(escrow)
+     
+
+    

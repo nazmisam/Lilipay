@@ -1,0 +1,19 @@
+= simple_form_for(@paymentrelease) do |f|
+  = f.error_notification
+  = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+
+  .form-inputs
+    = f.input :name
+    = f.input :contact_number
+    = f.input :amount
+    = f.input :description
+    = f.input :address
+    = f.input :postal_code
+    = f.input :city
+    = f.input :state
+    = f.input :country
+    = f.input :transaction_number
+    = f.association :escrow
+
+  .form-actions
+    = f.button :submit
