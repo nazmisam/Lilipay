@@ -28,9 +28,8 @@ nav.navbar.mb-2.shadow-lg.bg-neutral.text-neutral-content
                     li
                         a Settings
                     li
-                        = link_to destroy_user_session_path, data: {turbo_method: :delete} do
-                            span.material-icons-outlined
-                                | logout
+                      = link_to destroy_user_session_path, data: {turbo_method: :delete} do
+                        span.mi logout
 
                    
 

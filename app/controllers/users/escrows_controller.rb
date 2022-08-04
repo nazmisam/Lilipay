@@ -89,9 +89,15 @@ class Users::EscrowsController < ApplicationController
   
   def payment
     @escrow.generate_transaction_number
-    if @escrow.update(escrow_params)
+    if params[:Save]
+      @escrow.update(escrow_params)
+      respond_to do |format|
+        format.html { redirect_to user_escrows_url(@escrow), alert: "Account bank details was saved." }
+        format.json { render :show, status: :ok, location: @escrow }
+      end
+    else 
+      @escrow.update(escrow_params)
       @payment = Payment.new(escrow_id: @escrow.id, name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: @escrow.payment_amount, transaction_number: @escrow.transaction_number)
-      
       if @payment.save
         params_api = {
           uid: "02b66d73-c60f-47e6-a07c-0aa3609ddddd",
@@ -143,9 +149,9 @@ class Users::EscrowsController < ApplicationController
       end
     end
   end
-  def request_refund
-    @escrow = Escrow.find(params[:escrow_id])
-  end
+  # def request_refund
+  #   @escrow = Escrow.find(params[:escrow_id])
+  # end
   def paymentredirect
    
     user = User.find_by(email: params[:buyer_email])
@@ -183,7 +189,7 @@ class Users::EscrowsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def escrow_params
-      params.require(:escrow).permit(:user_id, :description, :refund_description, :refund_reason, :transaction_number, :buyer_email, :contact_number, :total_pay, :buyer_name, :proof, :status, :roles, :payment_for, :payment_amount, :transaction_fees, :user_email, :vendor_email, :invoice, :shipping_attention, :shipping_address, :shipping_postal, :shipping_city, :shipping_state, :shipping_country, :receipt, :tracking_number)
+      params.require(:escrow).permit(:payment_method, :name_on_account, :country, :currency, :bank_code, :bank_name, :account_number, :user_id, :description, :refund_description, :refund_reason, :transaction_number, :buyer_email, :contact_number, :total_pay, :buyer_name, :proof, :status, :roles, :payment_for, :payment_amount, :transaction_fees, :user_email, :vendor_email, :invoice, :shipping_attention, :shipping_address, :shipping_postal, :shipping_city, :shipping_state, :shipping_country, :receipt, :tracking_number)
     end
 
 end

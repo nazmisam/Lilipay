@@ -25,11 +25,7 @@ class Admins::EscrowsController < ApplicationController
   def create
 
     @escrow = Escrow.new(escrow_params)
-      if @escrow.roles = 0
-        @escrow.vendor_roles = 1
-      elsif @escrow.roles = 1
-        @escrow.vendor_roles = 0
-      end
+ 
     respond_to do |format|
       if @escrow.save
         format.html { redirect_to user_escrows_url(@escrow), notice: "Escrow was successfully created." }
@@ -123,7 +119,6 @@ class Admins::EscrowsController < ApplicationController
     respond_to do |format|
       if @escrow.update(escrow_params)
         @escrow.update_columns(status: 4)
-        sum = 0
         sum = @escrow.payment_amount 
         @paymentrelease = Paymentrelease.new(user_id: @escrow.user_id, description: @escrow.description, escrow_id: @escrow.id, name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: sum, transaction_number: @escrow.transaction_number, status: 1)
         @paymentrelease.save
@@ -136,7 +131,6 @@ class Admins::EscrowsController < ApplicationController
     respond_to do |format|
       if @escrow.update(escrow_params)
         @escrow.update_columns(status: 7)
-        sum = 0
         sum = @escrow.payment_amount - (@escrow.payment_amount * @escrow.transaction_fees / 100)
         @paymentrelease = Paymentrelease.new(user_id: @escrow.user_id, description: @escrow.description, escrow_id: @escrow.id, name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: sum, transaction_number: @escrow.transaction_number)
         @paymentrelease.save

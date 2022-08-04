@@ -7,6 +7,14 @@ module.exports = {
     './app/javascript/**/*.js'
   ],
 
+  theme: {
+    extend: {
+      fontFamily: {
+        'Material Icons': ['Material Icons']
+      },
+    }
+  },
+
   plugins: [require("daisyui")],
 
   // daisyUI config (optional)

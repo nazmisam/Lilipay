@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_01_033036) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_03_083258) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -81,6 +81,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_01_033036) do
     t.string "refund_description"
     t.string "refund_reason"
     t.integer "user_id"
+    t.string "name_on_account"
+    t.string "country"
+    t.string "currency"
+    t.string "bank_code"
+    t.string "bank_name"
+    t.integer "account_number"
+    t.string "payment_method"
   end
 
   create_table "paymentreleases", force: :cascade do |t|

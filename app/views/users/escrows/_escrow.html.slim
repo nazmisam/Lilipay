@@ -22,10 +22,38 @@ div id="#{dom_id escrow}"
       - else 
         =< escrow.user_email
     td
-      =< escrow.status.humanize
+      - case escrow.status
+      - when "pending" 
+        .badge.badge-warning
+          =< escrow.status.humanize
+      - when "approved"
+        .badge.badge-secondary
+          =< escrow.status.humanize
+      - when "paid"
+        span.badge.badge-accent
+          =< escrow.status.humanize
+      - when "processing"
+        span.badge.badge-info
+          =< escrow.status.humanize
+      - when "refund_requested"
+        span.badge.badge-error
+          =< escrow.status.humanize
+      - when "refunded"
+        span.badge.badge-error
+          =< escrow.status.humanize
+      - when "received"
+        span.badge.badge-success
+          =< escrow.status.humanize
+      - when "successful"
+        span.badge.badge-success
+          =< escrow.status.humanize
+      - when "rejected"
+        span.badge.badge-error
+          =< escrow.status.humanize
     td 
       | RM #{'%.2f' % escrow.payment_amount}
     td
-      = link_to heroicon('pencil-alt'), user_escrow_path(escrow) 
+      = link_to user_escrow_path(escrow)do 
+        span.mi open_in_new
       
     

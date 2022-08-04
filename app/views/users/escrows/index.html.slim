@@ -2,7 +2,10 @@
   .bg-white.shadow-md.rounded.px-8.pt-6.pb-8.mb-1
     h1.font-bold.text-5xl Escrows
     div.flex.justify-end
-      = link_to "New escrow", new_user_escrow_path
+      = link_to new_user_escrow_path, class: "btn" do
+        span.mi add_circle_outline
+        span &nbsp; Escrow
+        
 
 
     br

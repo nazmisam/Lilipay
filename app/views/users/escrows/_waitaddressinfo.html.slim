@@ -9,6 +9,60 @@ turbo-frame#approve
                     li.step.step Processing
                     li.step.step Receiving Confirmation
                     li.step.step Release Payment
-      
+            br
+            br
+            
+             
             .text-center 
-                | Please wait for counter-party to fill the shipment address and payment details
+              | Add bank details
+            br
+            .bg-white.rounded.max-w-2xl.mx-auto
+              = simple_form_for [:user, @escrow], data:{turbo:false} do |f|
+                div.flex.flex-col.w-full.lg:flex-row
+                  div
+                    .text-3xl.text-red-600.pt-10 Payment Summary
+                    br
+                    br
+                    strong.divider Payment Details
+                    .grid.grid-cols-2.gap-8 
+                      - sum = 0
+                      - sum = '%.2f' % (@escrow.payment_amount * @escrow.transaction_fees / 100 + @escrow.payment_amount )
+                      div
+                        p
+                          strong Invoice Amount
+                        p
+                          strong Fees (#{'%.0f' % @escrow.transaction_fees}%)
+                        p
+                          strong Total Payment
+                      div
+                        p.text-end
+                          strong RM #{'%.2f' % (@escrow.payment_amount)}
+                        p.text-end
+                          strong RM #{'%.2f' % (@escrow.payment_amount * @escrow.transaction_fees / 100)}
+                        p.text-end
+                          strong RM #{sum}
+
+                    .divider
+                    br
+                    p.text-end
+                      strong Total amount to be transferred to Escrow
+                    br
+                    p.text-end.text-xl 
+                      strong RM #{sum}
+
+                  .divider.divider-horizontal 
+                      
+                  div  
+                    .text-3xl.text-red-600.pt-10 Bank Details
+                    br
+                    = f.input :name_on_account
+                    = f.input :country
+                    = f.input :bank_code
+                    = f.input :bank_name
+                    = f.input :account_number
+                    br
+                    br
+                    .inline.flex.justify-end
+                        = f.button :submit, 'Save', name:'Save'
+                    br
+            

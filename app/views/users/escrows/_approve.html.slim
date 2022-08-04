@@ -16,52 +16,118 @@ turbo-frame#approve
             .text-center This transaction has been approved please fill in the shipping form
             br
             .bg-white.shadow-md.rounded.max-w-xl.mx-auto
-                .text-3xl.text-red-600.pt-10 Shipment Details
-                br
-                = simple_form_for [:user, @escrow], data:{turbo:false} do |f|
-                    = f.input :shipping_attention
-                    = f.input :shipping_address
-                    = f.input :shipping_postal
-                    = f.input :shipping_city
-                    = f.input :shipping_state
-                    = f.input :shipping_country
-                    
-                    br
-                    .text-3xl.text-red-600.pt-10 Payment Details
-                    br
-                    br
-                    .form-inputs
-                        - if @escrow.roles == 'buyer'
-                            = f.label :user_email, "Email" , class: 'text-sm font-medium text-gray-600 block'
-                            = f.input_field :buyer_email, value: current_user.email, class: 'font-bold', readonly: true
-                        - else
-                            = f.label :user_email, "Email" , class: 'text-sm font-medium text-gray-600 block'
-                            = f.input_field :buyer_email, value: @escrow.vendor_email, class: 'font-bold', readonly: true
-                        br
-                        br
-                        = f.label :user_email, "Transaction Number" , class: 'text-sm font-medium text-gray-600 block'
-                        = f.input_field :transaction_number, class: 'font-bold', readonly: true
-                        br
-                        br
-                        = f.input :buyer_name
-                        br
-                        = f.label :description, class: 'block'
-                        =< @escrow.description
-                        br
-                        br
-                        = f.label :payment_amount, class: "block"
-                        .text-end
-                            strong Invoice Amount: RM #{'%.2f' % (@escrow.payment_amount)}
-                            - sum = 0
-                            p 
-                                strong Transaction Fee (#{'%.0f' % @escrow.transaction_fees}%): RM #{'%.2f' % (@escrow.payment_amount * @escrow.transaction_fees / 100)}
-                            p
-                                - sum = '%.2f' % (@escrow.payment_amount * @escrow.transaction_fees / 100 + @escrow.payment_amount )
-                                strong Total Payment: RM #{f.text_field :total_pay, value: sum, readonly: true, class: 'w-10'}
-                            
+
+                    #options data-controller="visibility" 
+                        = simple_form_for [:user, @escrow], data:{turbo:false} do |f|
+
+                            = f.input :payment_method, as: :radio_buttons, checked: 'Manual', collection:['Manual', 'FPX'], include_blank: false, input_html:{data: {action: 'change->visibility#toggleTargets'}}
+                            div data-visibility-target="hideable"  
+                              div.flex.flex-col.w-full.lg:flex-row
+                                div
+                                  .text-3xl.text-red-600.pt-10 Payment Summary
+                                  br
+                                  br
+                                  strong.divider Payment Details
+                                  .grid.grid-cols-2.gap-8 
+                                    - sum = 0
+                                    - sum = '%.2f' % (@escrow.payment_amount * @escrow.transaction_fees / 100 + @escrow.payment_amount )
+                                    div
+                                      p
+                                        strong Invoice Amount
+                                      p
+                                        strong Fees (#{'%.0f' % @escrow.transaction_fees}%)
+                                      p
+                                        strong Total Payment
+                                    div
+                                      p.text-end
+                                        strong RM #{'%.2f' % (@escrow.payment_amount)}
+                                      p.text-end
+                                        strong RM #{'%.2f' % (@escrow.payment_amount * @escrow.transaction_fees / 100)}
+                                      p.text-end
+                                        strong RM #{sum}
+
+                                  .divider
+                                  br
+                                  p.text-end
+                                    strong Total amount to be transferred to Escrow
+                                  br
+                                  p.text-end.text-xl 
+                                    strong RM #{sum}
+                                    #{f.input_field :total_pay, value: sum, readonly: true, as: :hidden}
+
+                                .divider.divider-horizontal 
+                                    
+                                div  
+                                  .text-3xl.text-red-600.pt-10 Payment Details
+                                  br
+                                  - if @escrow.roles == 'buyer'
+                                    = f.label :user_email, "Email" , class: 'text-sm font-medium text-gray-600 block'
+                                    = f.input_field :buyer_email, value: current_user.email, class: 'font-bold', readonly: true
+                                  - else
+                                    = f.label :user_email, "Email" , class: 'text-sm font-medium text-gray-600 block'
+                                    = f.input_field :buyer_email, value: @escrow.vendor_email, class: 'font-bold', readonly: true
+                                  = f.input :buyer_name
+                                  = f.input :receipt, requrired: true
+                                
+                                  br
+                                  br
+                                  .inline.flex.justify-end
+                                      = f.button :submit, 'Continue'
+                                  br
+                                          
+                                                  
+                                              
+                            div data-visibility-target="hideable" hidden=""  
+                                .text-3xl.text-red-600.pt-10 Shipment Details
+                                br
+                                = simple_form_for [:user, @escrow], data:{turbo:false} do |f|
+                                    
+                                    
+                                    = f.input :shipping_attention
+                                    = f.input :shipping_address
+                                    = f.input :shipping_postal
+                                    = f.input :shipping_city
+                                    = f.input :shipping_state
+                                    = f.input :shipping_country
+                                    
+                                    br
+                                    .text-3xl.text-red-600.pt-10 Payment Details
+                                    br
+                                    br
+                                    .form-inputs
+                                        - if @escrow.roles == 'buyer'
+                                            = f.label :user_email, "Email" , class: 'text-sm font-medium text-gray-600 block'
+                                            = f.input_field :buyer_email, value: current_user.email, class: 'font-bold', readonly: true
+                                        - else
+                                            = f.label :user_email, "Email" , class: 'text-sm font-medium text-gray-600 block'
+                                            = f.input_field :buyer_email, value: @escrow.vendor_email, class: 'font-bold', readonly: true
+                                        br
+                                        br
+                                        = f.label :user_email, "Transaction Number" , class: 'text-sm font-medium text-gray-600 block'
+                                        = f.input_field :transaction_number, class: 'font-bold', readonly: true
+                                        br
+                                        br
+                                        = f.input :buyer_name
+                                        br
+                                        = f.label :description, class: 'block'
+                                        =< @escrow.description
+                                        br
+                                        br
+                                        = f.label :payment_amount, class: "block"
+                                        .text-end
+                                            strong Invoice Amount: RM #{'%.2f' % (@escrow.payment_amount)}
+                                            - sum = 0
+                                            - sum = '%.2f' % (@escrow.payment_amount * @escrow.transaction_fees / 100 + @escrow.payment_amount )
+                                            p 
+                                                strong Transaction Fee (#{'%.0f' % @escrow.transaction_fees}%): RM #{'%.2f' % (@escrow.payment_amount * @escrow.transaction_fees / 100)}
+                                            p
+                                            
+                                                strong Total Payment: RM #{f.text_field :total_pay, value: sum, readonly: true, class: 'w-10'}
+                                            
 
 
-                            br
-                    .inline.flex.justify-end
-                        = f.submit 'Continue', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer"
-                    br
+                                            br
+                                    .inline.flex.justify-end
+                                        = f.submit 'Continue', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer"
+                                    br
+                                
