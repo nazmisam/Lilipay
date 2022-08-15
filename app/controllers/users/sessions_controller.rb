@@ -14,16 +14,14 @@ class Users::SessionsController < Devise::SessionsController
   # end
 
   # DELETE /resource/sign_out
-  # def destroy
-  #   super
-  # end
-  def after_sign_in_path_for(resources)
-    user_home_index
+  def destroy
+    super do
+      # Turbo requires redirects be :see_other (303); so override Devise default (302)
+      return redirect_to after_sign_out_path_for(resource_name), status: :see_other
+    end
   end
 
-  def after_sign_out_path_for(resources)
-    user_session_path
-  end
+ 
   # protected
 
   # If you have extra params to permit, append them to the sanitizer.
