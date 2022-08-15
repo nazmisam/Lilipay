@@ -43,8 +43,8 @@ class Admins::EscrowsController < ApplicationController
   
     if @escrow.pending?
       approve
-    elsif @escrow.approved?
-      payment
+    elsif @escrow.payment_pending?
+      approve_payment
     elsif @escrow.paid?
       processing
     elsif @escrow.processing?
@@ -76,30 +76,12 @@ class Admins::EscrowsController < ApplicationController
     end
   end
   
-  def payment
-    @escrow.generate_transaction_number
-    if @escrow.update(escrow_params)
-      @payment = Payment.new(escrow_id: @escrow.id, name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: @escrow.payment_amount, transaction_number: @escrow.transaction_number)
-      
-      if @payment.save
-        params_api = {
-          uid: "02b66d73-c60f-47e6-a07c-0aa3609ddddd",
-          checksum: @escrow.generate_checksum,
-          buyer_email: @escrow.buyer_email,
-          buyer_name: @escrow.buyer_name,
-          buyer_phone: @escrow.shipping_attention,
-          order_number: @escrow.transaction_number,
-          product_description: @escrow.description,
-          transaction_amount: @escrow.total_pay,
-          callback_url: "",
-          redirect_url: "http://localhost:3000/users/escrows/paymentredirect",
-          token: "ZiSzpYWJ4VY5xhb1W7M9",
-          redirect_post: "true"
-        }
-        redirect_post("https://sandbox.securepay.my/api/v1/payments",            # URL, looks understandable
-          params: params_api)
-      else
-        Rails.logger.debug "Failed to save"
+  def approve_payment
+    respond_to do |format|
+      if @escrow.update(escrow_params)
+        @escrow.update(status: 2)
+        format.html { redirect_to admin_escrow_url(@escrow), notice: "Escrow was successfully updated." }
+        format.json { render :show, status: :ok, location: @escrow }
       end
     end
   end

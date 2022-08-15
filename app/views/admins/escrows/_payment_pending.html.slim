@@ -1,0 +1,69 @@
+turbo-frame#pending
+    .w-full.max-w-7xl.mx-auto
+        .bg-white.shadow-md.rounded.px-8.pt-6.pb-8.mb-1
+            h1.font-bold.text-5xl Escrows
+            div.lg:flex.justify-center.sm:flex.justify-start
+                ul.min-width:9.steps.steps-vertical.lg:steps-horizontal
+                    li.step.step Register
+                    li.step.step-primary Shipping & Payment
+                    li.step.step Delivery
+                    li.step.step Receiving Confirmation
+                    li.step.step Payment Released
+      
+                br
+                br
+            .bg-white.shadow-md.rounded.max-w-xl.mx-auto
+                = simple_form_for [:admin, @escrow], data:{turbo:false} do |f|
+                    div.flex.flex-col.w-full.lg:flex-row
+                        div
+                            .text-3xl.text-red-600.pt-10 Payment Summary
+                            br
+                            br
+                            strong.divider Payment Details
+                            .grid.grid-cols-2.gap-8 
+                            - sum = 0
+                            - sum = '%.2f' % (@escrow.payment_amount * @escrow.transaction_fees / 100 + @escrow.payment_amount )
+                            div
+                                p
+                                strong Invoice Amount
+                                p
+                                strong Fees (#{'%.0f' % @escrow.transaction_fees}%)
+                                p
+                                strong Total Payment
+                            div
+                                p.text-end
+                                strong RM #{'%.2f' % (@escrow.payment_amount)}
+                                p.text-end
+                                strong RM #{'%.2f' % (@escrow.payment_amount * @escrow.transaction_fees / 100)}
+                                p.text-end
+                                strong RM #{sum}
+
+                            .divider
+                            br
+                            p.text-end
+                            strong Total amount to be transferred to Escrow
+                            br
+                            p.text-end.text-xl 
+                            strong RM #{sum}
+                            #{f.input_field :total_pay, value: sum, readonly: true, as: :hidden}
+
+                        .divider.divider-horizontal 
+                            
+                        div  
+                            .text-3xl.text-red-600.pt-10 Payment Details
+                            br
+                            - if @escrow.roles == 'buyer'
+                                = f.label :user_email, "Email" , class: 'text-sm font-medium text-gray-600 block'
+                                = f.input_field :buyer_email, value: current_user.email, class: 'font-bold', readonly: true
+                            - else
+                                = f.label :user_email, "Email" , class: 'text-sm font-medium text-gray-600 block'
+                                = f.input_field :buyer_email, value: @escrow.vendor_email, class: 'font-bold', readonly: true
+                                = f.input :buyer_name
+                                strong.block Receipt file: 
+                                = link_to 'View file', rails_blob_path(escrow.receipt, disposition: 'preview')
+                        
+                            br
+                            br
+                            .inline.flex.justify-end
+                                = f.button :submit, 'Continue'
+                            br

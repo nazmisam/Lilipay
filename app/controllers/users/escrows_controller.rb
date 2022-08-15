@@ -69,7 +69,7 @@ class Users::EscrowsController < ApplicationController
       format.json { head :no_content }
     end
   end
-
+  
   def approve
     if params[:Reject]
       respond_to do |format|
@@ -95,7 +95,15 @@ class Users::EscrowsController < ApplicationController
         format.html { redirect_to user_escrows_url(@escrow), alert: "Account bank details was saved." }
         format.json { render :show, status: :ok, location: @escrow }
       end
-    else 
+    elsif params[:Submit]
+      if @escrow.update(escrow_params)
+        @escrow.update(status:9)
+        respond_to do |format|
+          format.html { redirect_to user_escrows_url(@escrow), alert: "Account bank details was saved." }
+          format.json { render :show, status: :ok, location: @escrow }
+        end
+      end
+    else
       @escrow.update(escrow_params)
       @payment = Payment.new(escrow_id: @escrow.id, name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: @escrow.payment_amount, transaction_number: @escrow.transaction_number)
       if @payment.save

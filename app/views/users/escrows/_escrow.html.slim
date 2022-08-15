@@ -50,6 +50,9 @@ div id="#{dom_id escrow}"
       - when "rejected"
         span.badge.badge-error
           =< escrow.status.humanize
+      - when "payment_pending"
+        span.badge.badge-error
+          =< escrow.status.humanize
     td 
       | RM #{'%.2f' % escrow.payment_amount}
     td
