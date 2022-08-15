@@ -17,7 +17,13 @@ class Users::SessionsController < Devise::SessionsController
   # def destroy
   #   super
   # end
+  def after_sign_in_path_for(resources)
+    user_home_index
+  end
 
+  def after_sign_out_path_for(resources)
+    user_session_path
+  end
   # protected
 
   # If you have extra params to permit, append them to the sanitizer.
