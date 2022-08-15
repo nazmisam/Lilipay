@@ -117,7 +117,7 @@ class Users::EscrowsController < ApplicationController
           product_description: @escrow.description,
           transaction_amount: @escrow.total_pay,
           callback_url: "",
-          redirect_url: "http://#{ENV["domain"]}/users/escrows/paymentredirect",
+          redirect_url: "https://#{ENV["domain"]}/users/escrows/paymentredirect",
           token: "ZiSzpYWJ4VY5xhb1W7M9",
           redirect_post: "true"
         }
