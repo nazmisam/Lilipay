@@ -1,8 +1,11 @@
-| Hi #{@escrow.vendor_email} you are invited to make an escrow transaction, 
-| ========================================================================
+p Hi #{@escrow.vendor_email} 
+| ==================================================================================================
 
-| If you dont have account, you can sign up to #{@url},
+p #{@escrow.user_email} has requested to make an escrow transaction, 
 
-| To login to the site, just follow this link: #{@url}.
+p for #{@escrow.description} #{@escrow.payment_for}
+p If you dont have account, you can register to #{@url1},
 
-| Thanks for joining and have a great day!
+p To login to the site, just follow this link: #{@url2}.
+
+p Thanks for using our services and have a great day!

@@ -33,6 +33,7 @@ class Users::EscrowsController < ApplicationController
       
     respond_to do |format|
       if @escrow.save
+        UserMailer.with(escrow: @escrow).invitation_email.deliver_now
         format.html { redirect_to user_escrows_url(@escrow), notice: "Escrow was successfully created." }
         format.json { render :show, status: :created, location: @escrow }
       else
