@@ -19,19 +19,20 @@ nav.navbar.mb-2.shadow-lg.bg-neutral.text-neutral-content
                 .mi notifications
                 span.badge.badge-sm.indicator-item.bg-red-500 
                   = @unread.count >= 9? "9+" : @unread.count
-                .mt-3.card.card-compact.dropdown-content.w-52.bg-base-100.shadow tabindex="0" 
-            ul.mt-3.p-2.shadow.menu.menu-compact.dropdown-content.bg-neutral.rounded-box.w-52 tabindex="0" 
+                .mt-3.card.card-compact.dropdown-content.w-60.bg-base-100.shadow tabindex="0" 
+            ul.mt-3.p-2.shadow.menu.menu-compact.dropdown-content.bg-neutral.rounded-box.w-60 tabindex="0" 
               div.divider Notification
               - @unread.each do |notification|
-                li 
+                li
                   = link_to notification.to_notification.message, notification.to_notification.url
               - if @read.count > 0 && @unread.count > 0
                 li
                   .divider 
               - elsif @read.count + @unread.count == 0
-                li No notifications yet
+                li.text-center No notifications yet
+                br
               - @read.each do |notification|
-                li 
+                li
                   = link_to notification.to_notification.message, notification.to_notification.url
               
                  
