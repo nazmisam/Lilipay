@@ -6,7 +6,7 @@ class Escrow < ApplicationRecord
     has_many :payments, dependent: :destroy
     has_many :paymentreleases, dependent: :destroy
     has_noticed_notifications model_name: 'Notification'
-    has_many :notifications, through: :user
+    has_many :notifications, through: :user, dependent: :destroy
 
     enum roles: [:seller, :buyer]
     enum status: [ :pending, :approved, :paid, :processing, :received, :refund_requested, :refunded, :successful, :rejected, :payment_pending]
