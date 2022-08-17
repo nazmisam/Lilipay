@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   def set_notifications
     notifications = Notification.where(recipient: current_user).newest_first.limit(9)
     @unread = notifications.unread
-    @read = notifications.unread
+    @read = notifications.read
   end
 
   def set_time_zone

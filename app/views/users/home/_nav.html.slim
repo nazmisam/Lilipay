@@ -25,7 +25,16 @@ nav.navbar.mb-2.shadow-lg.bg-neutral.text-neutral-content
               - @unread.each do |notification|
                 li 
                   = link_to notification.to_notification.message, notification.to_notification.url
-                    
+              - if @read.count > 0 && @unread.count > 0
+                li
+                  .divider 
+              - elsif @read.count + @unread.count == 0
+                li No notifications yet
+              - @read.each do |notification|
+                li 
+                  = link_to notification.to_notification.message, notification.to_notification.url
+              
+                 
           .dropdown.dropdown-end
               label.btn.btn-ghost.btn-circle.avatar tabindex="0" 
                   .w-10.rounded-full

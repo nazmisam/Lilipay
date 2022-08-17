@@ -18,12 +18,12 @@ class EscrowNotification < Noticed::Base
   # Define helper methods to make rendering easier.
   #
   def message
-    @escrow = Escrow.find_by(params[:escrow_id])
-    @user = User.find_by(params[:id])
-    "#{@escrow.user_email} has invited you to make escrow transaction" 
+    @escrow = Escrow.find(params[:escrow][:id])
+    @user = User.find_by(email: @escrow.user_email)
+    "#{@user.email} has invited you to make escrow transaction"
   end
   #
   def url
-    user_escrow_path(Escrow.find_by(params[:escrow_id]))
+    user_escrow_path(Escrow.find(params[:escrow][:id]))
   end
 end
