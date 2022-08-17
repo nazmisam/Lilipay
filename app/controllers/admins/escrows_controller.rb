@@ -102,7 +102,7 @@ class Admins::EscrowsController < ApplicationController
       if @escrow.update(escrow_params)
         @escrow.update_columns(status: 4)
         sum = @escrow.payment_amount 
-        @paymentrelease = Paymentrelease.new(user_id: @escrow.user_id, description: @escrow.description, escrow_id: @escrow.id, name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: sum, transaction_number: @escrow.transaction_number, status: 1)
+        @paymentrelease = Paymentrelease.new(user_id: @escrow.vendor_user_id, description: @escrow.description, escrow_id: @escrow.id, name: @escrow.buyer_name, contact_number: @escrow.shipping_attention, amount: sum, transaction_number: @escrow.transaction_number, status: 1)
         @paymentrelease.save
         format.html { redirect_to admin_escrow_url(@escrow), notice: "Escrow was successfully updated." }
         format.json { render :show, status: :ok, location: @escrow }

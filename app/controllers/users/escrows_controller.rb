@@ -15,6 +15,8 @@ class Users::EscrowsController < ApplicationController
   # GET /escrows/1 or /escrows/1.json
   def show
     @escrow.generate_transaction_number
+
+    mark_notifications_as_read
   end
 
   # GET /escrows/new
@@ -198,7 +200,13 @@ class Users::EscrowsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def escrow_params
-      params.require(:escrow).permit(:payment_method, :name_on_account, :country, :currency, :bank_code, :bank_name, :account_number, :user_id, :description, :refund_description, :refund_reason, :transaction_number, :buyer_email, :contact_number, :total_pay, :buyer_name, :proof, :status, :roles, :payment_for, :payment_amount, :transaction_fees, :user_email, :vendor_email, :invoice, :shipping_attention, :shipping_address, :shipping_postal, :shipping_city, :shipping_state, :shipping_country, :receipt, :tracking_number)
+      params.require(:escrow).permit(:vendor_user_id, :payment_method, :name_on_account, :country, :currency, :bank_code, :bank_name, :account_number, :user_id, :description, :refund_description, :refund_reason, :transaction_number, :buyer_email, :contact_number, :total_pay, :buyer_name, :proof, :status, :roles, :payment_for, :payment_amount, :transaction_fees, :user_email, :vendor_email, :invoice, :shipping_attention, :shipping_address, :shipping_postal, :shipping_city, :shipping_state, :shipping_country, :receipt, :tracking_number)
     end
-
+    
+    def mark_notifications_as_read
+      if current_user
+        notifications_to_mark_as_read = @escrow.notifications_as_escrow.where(recipient: current_user)
+        notifications_to_mark_as_read.update_all(read_at: Time.now)
+      end
+    end
 end

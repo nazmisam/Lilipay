@@ -103,3 +103,4 @@ gem 'cssbundling-rails'
 gem "figaro"
 gem 'trix-rails'
 gem 'simple_form-tailwind'
+gem "noticed", "~> 1.5"

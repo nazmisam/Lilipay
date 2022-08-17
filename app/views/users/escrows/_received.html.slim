@@ -20,6 +20,6 @@ turbo-frame#approve
                 p 
                     |Your Payment will be released in 3 days working days.
                 = simple_form_for [:user, @escrow], data:{turbo:false} do |f|
-                    = f.input_field :user_id, value: current_user.id, as: :hidden 
+                    = f.input_field :vendor_user_id, value: current_user.id, as: :hidden 
                     .inline.flex.justify-end
                     = f.submit 'Okay', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer"
