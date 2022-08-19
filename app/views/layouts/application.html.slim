@@ -1,29 +1,30 @@
 doctype html
 html
   head
-    title Lilipay
-    meta content="width=device-width,initial-scale=1" name="viewport" 
-    = csrf_meta_tags 
-    = csp_meta_tag 
-    
-    = stylesheet_link_tag "application", "data-turbo-track": "reload" 
-    = javascript_importmap_tags 
+    title Securepay
+    meta content="width=device-width,initial-scale=1" name="viewport"
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag "application", "data-turbo-track": "reload"
+    = javascript_importmap_tags
+    link href="https://www.securepay.my/wp-content/uploads/2020/07/favicon-securepay.png" rel="icon" sizes="32x32"
+
   body
     - if admin_signed_in?
       = render "admins/home/nav"
-    - elsif user_signed_in? 
+    - elsif user_signed_in?
       = render "users/home/nav"
     - else
       = render "home/nav"
-    
+
     div
       - if notice
         p class="alert alert-success"
-          = notice 
-    
+          = notice
+
       - if alert
         p class="alert alert-error"
-          = alert 
-          
+          = alert
+
     div class= " w-full h-full p-4 m-8 mx-auto"
       = yield
